@@ -71,12 +71,23 @@ body.drawer-open #app{transform:translateX(26px) scale(.955);border-radius:22px;
 /* ---------- inbox note ---------- */
 .note{position:relative;margin:10px var(--gr) 18px var(--gl);background-color:var(--note);color:var(--note-ink);border-radius:3px 3px 20px 3px;box-shadow:0 1px 0 rgba(0,0,0,.05),0 14px 30px -18px rgba(0,0,0,.45);transition:background-color .6s var(--ease),color .6s var(--ease),transform .25s var(--ease),box-shadow .25s}
 .note::before{content:"";position:absolute;top:-10px;left:50%;width:76px;height:20px;transform:translateX(-50%) rotate(-2.5deg);background:var(--accent);opacity:.32;border-radius:2px;pointer-events:none}
-.note-head{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;column-gap:10px;width:100%;padding:18px 16px 14px 18px;text-align:left}
+.note-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:16px 10px 12px 18px}
+.note-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0;padding:2px 0;text-align:left}
+.note-sw{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:99px;background:var(--note-line);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.note-sw b{opacity:.6;font-variant-numeric:tabular-nums}
+.note-sw.on{background:var(--note-ink);color:var(--note)}
+.note-sw.on b{opacity:.75}
+.note.habits-on .note-main{opacity:.5}
+.icons{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.ic{aspect-ratio:1;max-width:100%;border-radius:12px;display:grid;place-items:center;color:var(--muted);box-shadow:inset 0 0 0 1.5px var(--line);transition:background-color .2s,color .2s,transform .2s}
+.ic.on{background:var(--accent);color:var(--accent-ink);box-shadow:none;transform:scale(1.06)}
+.chip > svg{flex:none}
+.hb-name > svg{flex:none;color:var(--ink)}
 .note-title{font-family:var(--f-display);font-weight:800;font-size:26px;line-height:1;text-transform:uppercase;letter-spacing:.01em}
 .note-count{font-weight:600;font-size:13px;min-width:24px;height:24px;padding:0 7px;border-radius:99px;display:grid;place-items:center;background:var(--note-line);font-variant-numeric:tabular-nums}
-.note-chev{grid-column:4;opacity:.55;transition:transform .35s var(--ease)}
+.note-chev{width:34px;height:34px;display:grid;place-items:center;opacity:.55;transition:transform .35s var(--ease)}
 .note.open .note-chev{transform:rotate(180deg)}
-.note-prev{grid-column:1 / -1;margin-top:8px;font-size:14px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note-prev{flex-basis:100%;min-width:0;padding-bottom:2px;text-align:left;font-size:14px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .note-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s var(--ease)}
 .note.open .note-body{grid-template-rows:1fr}
 .note-inner{overflow:hidden;min-height:0}
@@ -140,7 +151,7 @@ body.drawer-open #app{transform:translateX(26px) scale(.955);border-radius:22px;
 .task.completing .t-title{opacity:.75;transition:opacity .5s}
 .t-meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;opacity:.72}
 .t-sec{display:inline-flex;align-items:center;gap:5px;font-weight:500}
-.t-sec i{width:7px;height:7px;border-radius:50%;background:var(--sec)}
+.t-sec svg{flex:none}
 .t-carry{display:inline-flex;align-items:center;gap:4px;font-weight:600}
 .t-assign{flex:none;width:34px;height:34px;margin:-5px -6px -5px 0;display:grid;place-items:center;border-radius:10px;opacity:.6}
 .t-assign.on{opacity:1;background:var(--note-line)}
@@ -201,7 +212,8 @@ body.is-dragging #trash{transform:translate(-50%,0);visibility:visible;transitio
 .sec-item{display:flex;align-items:center;gap:6px}
 .sec-row{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:11px 10px;border-radius:12px;font-size:15px;text-align:left}
 .sec-row.on{background:var(--line);font-weight:600}
-.sec-row i{width:12px;height:12px;border-radius:4px;background:var(--c,var(--ink));flex:none}
+.sec-row .si{flex:none;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:var(--line);color:var(--ink)}
+.sec-row.on .si{background:var(--accent);color:var(--accent-ink)}
 .sec-row span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sec-row em{font-style:normal;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .sec-del{height:34px;min-width:34px;padding:0 8px;border-radius:10px;display:grid;place-items:center;color:var(--muted);font-size:13px;font-weight:600;transition:background-color .2s,color .2s}
@@ -210,10 +222,7 @@ body.is-dragging #trash{transform:translate(-50%,0);visibility:visible;transitio
 .sec-add-row{display:flex;gap:8px}
 .sec-add input{flex:1;min-width:0;border:1.5px solid var(--line);background:transparent;border-radius:12px;padding:10px 12px;font-size:16px;outline:none}
 .sec-add input:focus{border-color:var(--ink)}
-.swatches{display:flex;flex-wrap:wrap;gap:8px}
-.sw{width:28px;height:28px;border-radius:9px;background:var(--c);position:relative;transition:transform .2s var(--ease)}
-.sw.on{transform:scale(1.12);box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--c)}
-.themes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:22px}
 .theme-card{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;font-weight:500;text-align:center;color:var(--muted)}
 .tc-bands{width:100%;aspect-ratio:3/4;max-width:100%;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--line);transition:transform .25s var(--ease),box-shadow .25s}
 .tc-bands span{flex:1}
@@ -235,10 +244,7 @@ body.is-dragging #trash{transform:translate(-50%,0);visibility:visible;transitio
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl));padding:2px var(--gr) 4px var(--gl)}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--line);border-radius:99px;padding:8px 13px;font-size:14px;font-weight:500;white-space:nowrap;color:inherit;position:relative;transition:background-color .2s,border-color .2s,color .2s}
-.chip i{width:9px;height:9px;border-radius:50%;background:var(--c)}
 .chip.sel{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.chip.sec.sel{background:var(--c);border-color:var(--c);color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.25)}
-.chip.sec.sel i{background:#fff}
 .band .chip,.note .chip{border-color:currentColor;border-color:rgba(127,127,127,.4)}
 .band .chip.sel,.note .chip.sel{background:currentColor}
 .sh-actions{display:flex;gap:10px;margin-top:24px}
@@ -430,6 +436,182 @@ button.set-row:active{background:var(--line)}
 .tp-b{height:36px;border-radius:10px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
 .tp-b.sel{background:var(--accent);color:var(--accent-ink);box-shadow:none}
 
+/* ---------- priority, deadlines, steps on goal rows ---------- */
+.t-star{display:inline-grid;place-items:center;width:18px;height:18px;margin-right:6px;border-radius:50%;background:var(--accent);color:var(--accent-ink);vertical-align:-3px}
+.t-star svg{width:11px;height:11px}
+.task.starred .t-title{font-weight:600}
+.t-dl,.t-steps,.t-goal{display:inline-flex;align-items:center;gap:4px;font-weight:600;font-variant-numeric:tabular-nums}
+.t-dl.soon,.t-dl.now,.t-dl.over,.t-stuck{padding:1px 8px 1px 6px;border-radius:99px}
+.t-dl.soon{background:var(--accent);color:var(--accent-ink)}
+.t-dl.now,.t-dl.over,.t-stuck{background:var(--danger);color:#fff}
+.t-stuck{display:inline-flex;align-items:center;gap:4px;font-weight:700;cursor:pointer}
+.dots i.st{width:12px;height:12px;border-radius:0;background:var(--accent);box-shadow:none;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.cc-dots i.st{width:7px;height:7px;border-radius:0;background:var(--accent);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.cc.starred:not(.sel){background:var(--line)}
+.cc-dl{position:absolute;top:4px;right:5px;color:var(--danger);line-height:0}
+.dl-strip{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 10px;padding:9px 12px;border-radius:14px;background:rgba(127,127,127,.15);font-size:13px}
+.dl-strip b{display:inline-flex;align-items:center;gap:5px;font-weight:700}
+.dl-strip button{font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.add-wrap{display:flex;align-items:center;gap:8px}
+.add-wrap .add-row{flex:1;min-width:0}
+.tpl-btn{flex:none;width:40px;height:40px;margin-top:4px;border-radius:12px;display:grid;place-items:center;opacity:.6}
+.tpl-btn:active{opacity:1;background:rgba(127,127,127,.18)}
+.spread-btn{display:inline-flex;align-items:center;gap:8px;margin:4px 0 6px;padding:8px 12px;border-radius:12px;background:var(--note-line);font-size:13.5px;font-weight:600}
+
+/* ---------- habits on the note ---------- */
+.hb-row{display:grid;grid-template-columns:minmax(0,1fr) repeat(7,26px);gap:0 3px;align-items:center}
+.hb-head{padding:2px 0 2px;font-size:10.5px;font-weight:700;text-transform:uppercase;text-align:center;opacity:.5}
+.hb-head .now{opacity:1;color:var(--accent)}
+.habit{padding:6px 0}
+.hb-name{display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:0;padding-right:6px;text-align:left;font-size:15px;font-weight:500}
+.hb-name span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb-name small{display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:600;color:var(--accent)}
+.hd{width:24px;height:24px;justify-self:center;border-radius:50%;display:grid;place-items:center;color:var(--accent-ink);box-shadow:inset 0 0 0 1.5px rgba(127,127,127,.45);transition:background-color .2s,box-shadow .2s,transform .2s}
+.hd.now{box-shadow:inset 0 0 0 2px var(--accent)}
+.hd.on{background:var(--accent);box-shadow:none}
+.hd.on.now{box-shadow:0 0 0 2px var(--note),0 0 0 3.5px var(--accent)}
+.hd:disabled{opacity:.3;cursor:default}
+.hd:not(:disabled):active{transform:scale(.85)}
+
+/* ---------- mood in today's card ---------- */
+.mood-btn{position:absolute;top:16px;right:var(--br);z-index:2;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:inherit;opacity:0;pointer-events:none;transform:scale(.6);transition:opacity .25s,transform .35s var(--ease)}
+.band.open .mood-btn{opacity:1;pointer-events:auto;transform:none}
+.mood-btn.empty{opacity:0}
+.band.open .mood-btn.empty{opacity:.75;animation:moodHint 2.4s ease 1.2s 2}
+@keyframes moodHint{0%,100%{transform:none}15%{transform:rotate(-12deg) scale(1.08)}30%{transform:rotate(10deg) scale(1.08)}45%{transform:none}}
+.mood-btn.ro{pointer-events:none}
+.band.mb.open .band-side{opacity:0}
+.band.mb.open .band-head{padding-right:calc(var(--br) + 54px)}
+.band-side{transition:opacity .2s}
+.mood-pop{position:absolute;top:64px;right:max(12px, env(safe-area-inset-right, 0px));z-index:6;width:min(330px, calc(100% - 24px));display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:20px;background:var(--paper);color:var(--ink);box-shadow:0 20px 44px -16px rgba(0,0,0,.5),0 0 0 1px var(--line);animation:pickIn .28s var(--ease)}
+.mood-q{font-weight:700;font-size:15px}
+.mood-faces{display:flex;justify-content:space-between;gap:4px}
+.mf{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;border-radius:14px;transition:transform .2s var(--ease),background-color .2s}
+.mf small{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.mf.on{background:var(--line);transform:scale(1.06)}
+.mf.on small{color:var(--ink);font-weight:700}
+.mood-row{display:flex;gap:8px;align-items:center}
+.mood-note{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px;font-size:16px;background:transparent;color:var(--ink);outline:none}
+.mood-note:focus{border-color:var(--ink)}
+
+/* ---------- goal sheet: title row, steps, "More" ---------- */
+.title-row{display:flex;align-items:center;gap:2px}
+.title-row .big-input{flex:1;min-width:0}
+.star-tg,.mic{flex:none;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:var(--muted);transition:color .2s,background-color .2s,transform .2s}
+.star-tg.on{color:var(--accent);transform:scale(1.08)}
+.star-tg.on path{fill:currentColor}
+.mic.on{color:#fff;background:var(--danger);animation:micPulse 1.2s ease infinite}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(214,52,44,.45)}50%{box-shadow:0 0 0 8px rgba(214,52,44,0)}}
+.note-add .mic{width:34px;height:34px;color:inherit;opacity:.55}
+.note-add .mic.on{opacity:1}
+.fl span{color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:0}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;align-items:center;gap:10px;padding:5px 0}
+.step .check{width:22px;height:22px;border-radius:7px;opacity:.75}
+.step.done .check{background:var(--accent);border-color:var(--accent);opacity:1}
+.step.done .check svg{stroke-dashoffset:0}
+.step span{flex:1;min-width:0;font-size:15px;overflow-wrap:anywhere}
+.step.done span{text-decoration:line-through;opacity:.55}
+.step-del{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:var(--muted)}
+.step-add{display:flex;align-items:center;gap:10px;padding:2px 0}
+.step-add .plus{color:var(--muted);flex:none}
+.step-add input{flex:1;min-width:0;border:0;border-bottom:1.5px dashed var(--line);background:transparent;padding:9px 0;font-size:16px;color:var(--ink);outline:none}
+.step-add input:focus{border-bottom-style:solid;border-bottom-color:var(--ink)}
+.ts-day{display:inline-block;min-width:30px;margin-right:6px;font-style:normal;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.step span svg{display:inline;vertical-align:-1px;color:var(--accent)}
+.more-tg{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:20px;padding:13px 14px;border-radius:14px;background:var(--bg);font-size:15px;font-weight:700;text-align:left}
+.more-tg small{display:block;margin-top:2px;font-size:12.5px;font-weight:500;color:var(--muted)}
+.more-tg .chev{color:var(--muted);transition:transform .3s var(--ease)}
+.more-tg[aria-expanded="true"] .chev{transform:rotate(180deg)}
+
+/* ---------- action sheet ---------- */
+.ms-sub{margin:-2px 0 12px;color:var(--muted);font-size:14px}
+.ms-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.ms-item{display:flex;align-items:center;gap:14px;width:100%;padding:13px 14px;border-radius:16px;background:var(--bg);font-size:16px;font-weight:600;text-align:left}
+.ms-item svg{flex:none;color:var(--muted)}
+.ms-item small{display:block;margin-top:2px;font-size:12.5px;font-weight:400;color:var(--muted)}
+.ms-item.danger,.ms-item.danger svg{color:var(--danger)}
+.ms-item:active{background:var(--line)}
+
+/* ---------- screens: big goals, templates, matrix ---------- */
+.scr-note{margin:2px 2px 14px;font-size:13.5px;color:var(--muted);line-height:1.45;max-width:60ch}
+.gcard,.tpc{margin-bottom:12px;padding:16px;border-radius:20px;background:var(--paper);box-shadow:0 0 0 1px var(--line)}
+.gcard.achieved{opacity:.75}
+.gc-head{display:flex;align-items:center;gap:12px;width:100%;text-align:left}
+.gc-head > svg{flex:none;color:var(--muted)}
+.gc-ic,.tpc-ic{flex:none;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink)}
+.gc-tx,.tpc-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.gc-tx b,.tpc-tx b{font-size:17px;overflow-wrap:anywhere}
+.gc-tx small,.tpc-tx small{font-size:12.5px;color:var(--muted)}
+.gc-prog{display:flex;align-items:center;gap:10px;margin:14px 0 4px}
+.gc-bar{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.gc-bar i{display:block;height:100%;border-radius:5px;background:var(--accent);transition:width .5s var(--ease)}
+.gc-prog b{font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.gc-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.gc-acts .btn{display:inline-flex}
+.tpc-top{display:flex;align-items:center;gap:12px}
+.tpc-ic{background:var(--line);color:var(--ink)}
+.tpc-prev{margin:10px 0 0;font-size:13.5px;color:var(--muted);line-height:1.4}
+.tpl-new{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.empty-big p{margin:0 auto 16px}
+.empty-big > svg{width:44px;height:44px}
+.seg button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.quads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quad{min-width:0;padding:12px 10px;border-radius:18px;background:var(--paper);box-shadow:0 0 0 1px var(--line)}
+.quad h4{margin:0;font-size:13px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
+.quad > p{margin:2px 0 6px;font-size:11.5px;color:var(--muted)}
+.quad.q0{box-shadow:0 0 0 2px var(--danger)}
+.quad.q0 h4{color:var(--danger)}
+.quad.q1 h4{color:var(--accent)}
+.quad .task{gap:8px;padding:7px 0}
+.quad .check{width:20px;height:20px;border-radius:6px}
+.quad .t-title{font-size:14px}
+.quad .empty{font-size:13px}
+
+/* ---------- weekly review ---------- */
+.rv-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0 12px}
+.rv-nav div{display:flex;flex-direction:column;align-items:center;text-align:center}
+.rv-nav b{font-family:var(--f-display);font-weight:800;font-size:24px;text-transform:uppercase;line-height:1}
+.rv-nav span{margin-top:3px;font-size:13px;color:var(--muted)}
+.rv-nav .icon-btn:disabled{opacity:.25}
+.rv-top{display:flex;align-items:center;gap:16px}
+.rv-ring{position:relative;flex:none;width:84px;height:84px}
+.rv-ring svg{width:100%;height:100%}
+.rv-ring .bgc{fill:none;stroke:var(--line);stroke-width:8}
+.rv-ring .fgc{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round}
+.rv-ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:24px}
+.rv-big{display:flex;flex-direction:column}
+.rv-big b{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.rv-big small{font-size:24px;color:var(--muted)}
+.rv-big span{font-size:13px;color:var(--muted)}
+.rv-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0}
+.rv-stat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:10px;border-radius:14px;background:var(--bg)}
+.rv-stat b{display:flex;align-items:center;gap:5px;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.rv-stat b svg{flex:none}
+.rv-stat b > svg:not([width="20"]){color:var(--accent)}
+.rv-stat span{font-size:11.5px;color:var(--muted)}
+.rv-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;align-items:end}
+.rv-d{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.rv-d em{font-style:normal;font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums}
+.rv-mood{height:20px;display:grid;place-items:center}
+.rv-bar{position:relative;width:100%;height:60px;border-radius:8px;background:var(--line);overflow:hidden}
+.rv-bar i{position:absolute;left:0;right:0;bottom:0;border-radius:6px 6px 0 0;background:var(--accent);opacity:.45}
+.rv-d.best .rv-bar i{opacity:1}
+.rv-d.now > span:last-child{color:var(--accent)}
+.rv-best{margin:12px 0 0;font-size:13.5px;color:var(--muted)}
+.rv-share{margin-top:14px}
+.card-btn{margin-top:12px}
+.sec-h{margin:24px 2px 12px;font-family:var(--f-display);font-weight:800;font-size:22px;text-transform:uppercase}
+.ach{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ach-b{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;padding:12px 6px;border-radius:16px;background:var(--bg);text-align:center;font-size:12px}
+.ach-b b{font-weight:700;line-height:1.2}
+.ach-b small{font-size:10.5px;color:var(--muted);line-height:1.25}
+.ach-ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:var(--muted)}
+.ach-b.on .ach-ic{background:var(--accent);color:var(--accent-ink)}
+.ach-b:not(.on){opacity:.55}
+.ach-b:not(.on) .ach-ic svg{filter:grayscale(1)}
+.stuck-row .t-dl{flex:none}
+
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 #holder{position:fixed;left:-9999px;top:0;width:10px;height:10px;overflow:hidden;visibility:hidden}
 
@@ -478,6 +660,8 @@ button.set-row:active{background:var(--line)}
 <section id="scrDone" class="screen" inert></section>
 <section id="scrStats" class="screen" inert></section>
 <section id="scrUp" class="screen" inert></section>
+<section id="scrGoals" class="screen" inert></section>
+<section id="scrTpl" class="screen" inert></section>
 <div id="sheetWrap" class="layer" inert><div class="scrim" data-act="close-sheet"></div><div id="sheet" class="sheet" role="dialog" aria-modal="true"></div></div>
 <canvas id="fx"></canvas>
 <div id="holder" aria-hidden="true"></div>
@@ -500,6 +684,27 @@ ru:{appName:'Weeky',hours:'Часы',minutes:'Минуты',prevMonth:'Прош�
 en:{appName:'Weeky',hours:'Hours',minutes:'Minutes',prevMonth:'Previous month',nextMonth:'Next month',upcoming:'Upcoming',upEmpty:'All done. Add a new goal with the + button.',time:'Time',noTime:'No time',setTime:'Set time',remind:'Reminder',noRemind:'No reminder',atTime:'On time',before10:'10 min before',before30:'30 min before',before60:'1 hour before',remindNote:'While Weeky is open: sound, vibration and a notification. To be reminded even when the app is closed, open the goal and tap “Add to Calendar”.',repeat:'Repeat',noRepeat:'Never',rDaily:'Every day',rWeekdays:'Weekdays',rWeekly:'Every week',rMonthly:'Every month',titleEx:'e.g. Call mom tomorrow at 6pm #personal',recognized:'Recognized',snooze:'+10 min',doneBtn:'Done',remindNow:'Now',remindIn:'In {n} min',archiveDay:'Done on this day',planned:'Planned',legendPlan:'planned',legendDone:'done',nextAdded:'Done. Next repeat: {d}',inbox:'Tasks',inboxEmpty:'Tasks without a date live here. Jot it down now and pick a day later.',inboxPh:'New task…',inboxNone:'Empty. Tap to jot something down',addGoal:'Add a goal',emptyDay:'No goals',pastDay:'This day is over. Anything unfinished moved to today.',today:'Today',tomorrow:'Tomorrow',noDate:'No date',otherDate:'Pick a date',section:'Section',noSection:'No section',date:'Date',titlePh:'What needs doing?',save:'Save',newGoal:'New goal',goal:'Goal',del:'Delete',delQ:'Delete for good?',doneList:'Done',completed:'Completed',stats:'Statistics',calendar:'Calendar',weekW:'Week',monthW:'Month',byDays:'Days',byWeeks:'Weeks',byMonths:'Months',sections:'Sections',allSections:'All goals',newSection:'New section',sectionPh:'Section name',add:'Add',theme:'Color theme',language:'Language',carried:'carried {n}d',weekN:'Week {n}',thisWeek:'this week',backToday:'back to today',movedTo:'Moved to {d}',toInbox:'Moved to Tasks',deleted:'Goal deleted',undo:'Undo',doneToast:'Done ✓',restored:'Goal is back in progress',dropDelete:'Delete',syncDevice:'Data is stored on this device',settings:'Settings',notif:'Notifications',notifEnable:'Turn on',notifOn:'On',notifBlocked:'Blocked. Allow them in your phone settings.',notifInstall:'On iPhone, add Weeky to the Home Screen first: Share → Add to Home Screen, then open it from the icon.',notifNone:'This browser can’t show notifications.',notifNote:'They arrive while Weeky is open or recently in the background. For a reminder that always arrives, add the goal to Calendar.',notifTest:'Notifications are on',vibration:'Vibration',sound:'Sound',toCalendar:'Add to Calendar',calAll:'Timed goals → Calendar',calAllNote:'Next 30 days. Calendar reminds you even when Weeky is closed.',calNothing:'No timed goals in the next 30 days',backup:'Backup',backupNote:'A file with all goals and settings. Use it to move your data to another device too.',backupSave:'Save',backupLoad:'Restore',backupDone:'Data restored from the file',backupBad:'Couldn’t read the file. Pick a Weeky backup (.json).',splashTag:'Your week in your pocket',w8:'Smart input: type “Gym tomorrow at 8 #health”',assignDay:'Set a day',assigned:'Set for {d}',openWeek:'Open this week',noGoals:'No goals for this day',emptyDone:'Tick goals off and they gather here by day, week and month.',added:'Added to {d}',show:'Show',menu:'Menu',close:'Close',back:'Back',prevWeek:'Previous week',nextWeek:'Next week',needTitle:'Write what needs doing',quota:'Storage is full. Delete old completed goals.',filterOn:'Section',clearFilter:'Show all',completedTotal:'Completed',sWeekDone:'done in 7 days',sWeekRate:'of this week done',sStreak:'days in a row',sBest:'best {n}',sLast14:'Last 14 days',sWhen:'When you get things done',sSections:'Sections, last 30 days',sStuck:'Stuck goals',sStuckNone:'Nothing is stuck. Everything is moving.',sInsights:'Insights',sMore:'More numbers',sOnTime:'done on the planned day',sLead:'average time from note to done',sTotal:'done in total',sOpen:'in progress now',morning:'Morning',afternoon:'Afternoon',evening:'Evening',night:'Night',noSec:'No section',insBest:'Your most productive day is {d}. Put the important things there.',insUp:'{p}% more done than the week before. Good pace.',insDown:'{p}% less done than the week before. Too many goals, maybe?',insSame:'Steady pace: the same as the week before.',insMorning:'You finish most goals in the morning. Put the hard ones early.',insAfternoon:'Your peak is the afternoon, 12 to 5 pm.',insEvening:'You finish most goals in the evening. Keep mornings light.',insNight:'Lots of goals finished at night. Remember to sleep.',insStuck:'{n} goals have been carried for more than 3 days. Split them into steps or delete them.',insOverload:'{d}: {n} planned, while you usually finish {a} a day. Move some of them.',insStreak:'{n} days in a row with finished goals. Finish one today to keep it going.',insTop:'You got the most done in “{s}”.',insOnTime:'{p}% of goals were done on the day they were planned for.',insStart:'Tick off goals and insights about your rhythm will show up here.',hoursShort:'{n}h',daysShort:'{n}d',goalsPl:{one:'{n} goal',other:'{n} goals'},w1:'Open Weeky',w2:'Tick me off',w3:'Press and hold me, then drag me to another day',w4:'Yesterday’s goal: unfinished goals move to today on their own',w5:'Swipe the days left for next week',w6:'The menu on the left has sections, color themes and language',w7:'A task with no date: tap the calendar icon to pick a day',secWork:'Work',secLife:'Personal',secHealth:'Health',th_mono:'Graphite',th_pistachio:'Pistachio',th_dusk:'Dusk',th_navy:'Navy & Gold',th_bordeaux:'Bordeaux',th_sunset:'Sunset',th_ocean:'Ocean',th_coal:'Charcoal'},
 es:{appName:'Weeky',hours:'Horas',minutes:'Minutos',prevMonth:'Mes anterior',nextMonth:'Mes siguiente',upcoming:'Próximos',upEmpty:'Todo hecho. Añade un objetivo con el botón +.',time:'Hora',noTime:'Sin hora',setTime:'Elegir hora',remind:'Recordatorio',noRemind:'Sin recordatorio',atTime:'A la hora',before10:'10 min antes',before30:'30 min antes',before60:'1 hora antes',remindNote:'Con Weeky abierto: sonido, vibración y notificación. Para que te avise aunque la app esté cerrada, abre el objetivo y pulsa «Añadir al Calendario».',repeat:'Repetir',noRepeat:'No repetir',rDaily:'Cada día',rWeekdays:'Entre semana',rWeekly:'Cada semana',rMonthly:'Cada mes',titleEx:'Ej.: Reunión mañana a las 10 #trabajo',recognized:'Detectado',snooze:'+10 min',doneBtn:'Hecho',remindNow:'Ahora',remindIn:'En {n} min',archiveDay:'Hecho este día',planned:'Previsto',legendPlan:'previsto',legendDone:'hecho',nextAdded:'Hecho. Siguiente repetición: {d}',inbox:'Tareas',inboxEmpty:'Aquí van las tareas sin fecha. Apúntala ahora y elige el día después.',inboxPh:'Nueva tarea…',inboxNone:'Vacío. Toca para apuntar algo',addGoal:'Añadir objetivo',emptyDay:'Sin objetivos',pastDay:'Este día ya pasó. Lo pendiente se movió a hoy.',today:'Hoy',tomorrow:'Mañana',noDate:'Sin fecha',otherDate:'Otra fecha',section:'Sección',noSection:'Sin sección',date:'Fecha',titlePh:'¿Qué hay que hacer?',save:'Guardar',newGoal:'Nuevo objetivo',goal:'Objetivo',del:'Eliminar',delQ:'¿Eliminar de verdad?',doneList:'Hecho',completed:'Completados',stats:'Estadísticas',calendar:'Calendario',weekW:'Semana',monthW:'Mes',byDays:'Días',byWeeks:'Semanas',byMonths:'Meses',sections:'Secciones',allSections:'Todos los objetivos',newSection:'Nueva sección',sectionPh:'Nombre de la sección',add:'Añadir',theme:'Gama de color',language:'Idioma',carried:'arrastrado {n} d',weekN:'Semana {n}',thisWeek:'esta semana',backToday:'volver a hoy',movedTo:'Movido: {d}',toInbox:'Movido a Tareas',deleted:'Objetivo eliminado',undo:'Deshacer',doneToast:'Hecho ✓',restored:'El objetivo vuelve a estar pendiente',dropDelete:'Eliminar',syncDevice:'Los datos se guardan en este dispositivo',settings:'Ajustes',notif:'Notificaciones',notifEnable:'Activar',notifOn:'Activadas',notifBlocked:'Bloqueadas. Permítelas en los ajustes del teléfono.',notifInstall:'En iPhone, primero añade Weeky a la pantalla de inicio: Compartir → Añadir a pantalla de inicio, y ábrelo desde el icono.',notifNone:'Este navegador no muestra notificaciones.',notifNote:'Llegan mientras Weeky está abierto o en segundo plano hace poco. Para un aviso seguro, añade el objetivo al Calendario.',notifTest:'Notificaciones activadas',vibration:'Vibración',sound:'Sonido',toCalendar:'Añadir al Calendario',calAll:'Objetivos con hora → Calendario',calAllNote:'Próximos 30 días. El Calendario avisa aunque Weeky esté cerrado.',calNothing:'No hay objetivos con hora en los próximos 30 días',backup:'Copia de seguridad',backupNote:'Un archivo con todos los objetivos y ajustes. También sirve para pasar los datos a otro dispositivo.',backupSave:'Guardar',backupLoad:'Restaurar',backupDone:'Datos restaurados desde el archivo',backupBad:'No se pudo leer el archivo. Elige una copia de Weeky (.json).',splashTag:'Tu semana en el bolsillo',w8:'Entrada inteligente: escribe «Gimnasio mañana a las 8 #salud»',assignDay:'Elegir día',assigned:'Asignado: {d}',openWeek:'Abrir esta semana',noGoals:'No hay objetivos este día',emptyDone:'Marca objetivos como hechos y se reunirán aquí por días, semanas y meses.',added:'Añadido: {d}',show:'Ver',menu:'Menú',close:'Cerrar',back:'Atrás',prevWeek:'Semana anterior',nextWeek:'Semana siguiente',needTitle:'Escribe qué hay que hacer',quota:'El almacenamiento está lleno. Elimina objetivos completados antiguos.',filterOn:'Sección',clearFilter:'Ver todo',completedTotal:'Completados',sWeekDone:'hechos en 7 días',sWeekRate:'de la semana hecho',sStreak:'días seguidos',sBest:'récord {n}',sLast14:'Últimos 14 días',sWhen:'Cuándo rindes más',sSections:'Secciones, últimos 30 días',sStuck:'Objetivos atascados',sStuckNone:'Nada atascado. Todo avanza.',sInsights:'Observaciones',sMore:'Más cifras',sOnTime:'hechos el día previsto',sLead:'tiempo medio de apuntar a hacer',sTotal:'hechos en total',sOpen:'pendientes ahora',morning:'Mañana',afternoon:'Tarde',evening:'Noche',night:'Madrugada',noSec:'Sin sección',insBest:'Tu día más productivo es el {d}. Pon ahí lo importante.',insUp:'Un {p}% más que la semana anterior. Buen ritmo.',insDown:'Un {p}% menos que la semana anterior. ¿Quizá demasiados objetivos?',insSame:'Ritmo estable: igual que la semana anterior.',insMorning:'Terminas la mayoría por la mañana. Deja lo difícil para temprano.',insAfternoon:'Tu pico es por la tarde, de 12 a 17.',insEvening:'Terminas la mayoría al anochecer. Planea mañanas ligeras.',insNight:'Muchos objetivos cerrados de madrugada. No olvides dormir.',insStuck:'{n} objetivos llevan más de 3 días arrastrándose. Divídelos en pasos o elimínalos.',insOverload:'{d}: {n} previstos, y sueles terminar {a} al día. Mueve algunos.',insStreak:'{n} días seguidos completando objetivos. Termina uno hoy para no romper la racha.',insTop:'Donde más has avanzado: «{s}».',insOnTime:'El {p}% de los objetivos se hicieron el día previsto.',insStart:'Marca objetivos como hechos y aquí aparecerán observaciones sobre tu ritmo.',hoursShort:'{n} h',daysShort:'{n} d',goalsPl:{one:'{n} objetivo',other:'{n} objetivos'},w1:'Abrir Weeky',w2:'Márcame como hecho',w3:'Mantenme pulsado y arrástrame a otro día',w4:'Objetivo de ayer: lo pendiente se mueve solo a hoy',w5:'Desliza los días a la izquierda para ver la semana siguiente',w6:'En el menú de la izquierda: secciones, colores e idioma',w7:'Tarea sin fecha: toca el calendario para elegir un día',secWork:'Trabajo',secLife:'Personal',secHealth:'Salud',th_mono:'Grafito',th_pistachio:'Pistacho',th_dusk:'Crepúsculo',th_navy:'Noche y oro',th_bordeaux:'Burdeos',th_sunset:'Atardecer',th_ocean:'Océano',th_coal:'Carbón'},
 fr:{appName:'Weeky',hours:'Heures',minutes:'Minutes',prevMonth:'Mois précédent',nextMonth:'Mois suivant',upcoming:'À venir',upEmpty:'Tout est fait. Ajoutez un objectif avec le bouton +.',time:'Heure',noTime:'Sans heure',setTime:'Choisir l’heure',remind:'Rappel',noRemind:'Sans rappel',atTime:'À l’heure',before10:'10 min avant',before30:'30 min avant',before60:'1 h avant',remindNote:'Weeky ouvert : son, vibration et notification. Pour un rappel même app fermée, ouvrez l’objectif et touchez « Ajouter au Calendrier ».',repeat:'Répéter',noRepeat:'Jamais',rDaily:'Chaque jour',rWeekdays:'En semaine',rWeekly:'Chaque semaine',rMonthly:'Chaque mois',titleEx:'Ex. : Réunion demain à 10h #travail',recognized:'Reconnu',snooze:'+10 min',doneBtn:'Fait',remindNow:'Maintenant',remindIn:'Dans {n} min',archiveDay:'Fait ce jour-là',planned:'Prévu',legendPlan:'prévu',legendDone:'fait',nextAdded:'Fait. Prochaine répétition : {d}',inbox:'Tâches',inboxEmpty:'Les tâches sans date vivent ici. Notez-la maintenant, choisissez le jour plus tard.',inboxPh:'Nouvelle tâche…',inboxNone:'Vide. Touchez pour noter quelque chose',addGoal:'Ajouter un objectif',emptyDay:'Aucun objectif',pastDay:'Cette journée est passée. Ce qui reste a été déplacé à aujourd’hui.',today:'Aujourd’hui',tomorrow:'Demain',noDate:'Sans date',otherDate:'Autre date',section:'Section',noSection:'Sans section',date:'Date',titlePh:'Que faut-il faire ?',save:'Enregistrer',newGoal:'Nouvel objectif',goal:'Objectif',del:'Supprimer',delQ:'Supprimer définitivement ?',doneList:'Fait',completed:'Terminés',stats:'Statistiques',calendar:'Calendrier',weekW:'Semaine',monthW:'Mois',byDays:'Jours',byWeeks:'Semaines',byMonths:'Mois',sections:'Sections',allSections:'Tous les objectifs',newSection:'Nouvelle section',sectionPh:'Nom de la section',add:'Ajouter',theme:'Palette de couleurs',language:'Langue',carried:'reporté {n} j',weekN:'Semaine {n}',thisWeek:'cette semaine',backToday:'revenir à aujourd’hui',movedTo:'Déplacé : {d}',toInbox:'Déplacé dans Tâches',deleted:'Objectif supprimé',undo:'Annuler',doneToast:'Fait ✓',restored:'L’objectif est de nouveau à faire',dropDelete:'Supprimer',syncDevice:'Les données restent sur cet appareil',settings:'Réglages',notif:'Notifications',notifEnable:'Activer',notifOn:'Activées',notifBlocked:'Bloquées. Autorisez-les dans les réglages du téléphone.',notifInstall:'Sur iPhone, ajoutez d’abord Weeky à l’écran d’accueil : Partager → Sur l’écran d’accueil, puis ouvrez-le depuis l’icône.',notifNone:'Ce navigateur n’affiche pas de notifications.',notifNote:'Elles arrivent tant que Weeky est ouvert ou récemment en arrière-plan. Pour un rappel sûr, ajoutez l’objectif au Calendrier.',notifTest:'Notifications activées',vibration:'Vibration',sound:'Son',toCalendar:'Ajouter au Calendrier',calAll:'Objectifs avec heure → Calendrier',calAllNote:'30 prochains jours. Le Calendrier vous prévient même si Weeky est fermé.',calNothing:'Aucun objectif avec heure dans les 30 prochains jours',backup:'Sauvegarde',backupNote:'Un fichier avec tous les objectifs et réglages. Il sert aussi à transférer les données vers un autre appareil.',backupSave:'Enregistrer',backupLoad:'Restaurer',backupDone:'Données restaurées depuis le fichier',backupBad:'Impossible de lire le fichier. Choisissez une sauvegarde Weeky (.json).',splashTag:'Votre semaine en poche',w8:'Saisie intelligente : tapez « Sport demain à 8h #santé »',assignDay:'Choisir un jour',assigned:'Prévu : {d}',openWeek:'Ouvrir cette semaine',noGoals:'Aucun objectif ce jour-là',emptyDone:'Cochez vos objectifs : ils se rangent ici par jour, semaine et mois.',added:'Ajouté : {d}',show:'Voir',menu:'Menu',close:'Fermer',back:'Retour',prevWeek:'Semaine précédente',nextWeek:'Semaine suivante',needTitle:'Écrivez ce qu’il faut faire',quota:'Le stockage est plein. Supprimez d’anciens objectifs terminés.',filterOn:'Section',clearFilter:'Tout afficher',completedTotal:'Terminés',sWeekDone:'faits en 7 jours',sWeekRate:'de la semaine fait',sStreak:'jours d’affilée',sBest:'record {n}',sLast14:'14 derniers jours',sWhen:'Quand vous êtes efficace',sSections:'Sections, 30 derniers jours',sStuck:'Objectifs bloqués',sStuckNone:'Rien n’est bloqué. Tout avance.',sInsights:'Observations',sMore:'Autres chiffres',sOnTime:'faits le jour prévu',sLead:'délai moyen entre note et réalisation',sTotal:'faits au total',sOpen:'en cours',morning:'Matin',afternoon:'Après-midi',evening:'Soir',night:'Nuit',noSec:'Sans section',insBest:'Votre jour le plus productif : {d}. Placez-y l’essentiel.',insUp:'{p} % de plus que la semaine précédente. Bon rythme.',insDown:'{p} % de moins que la semaine précédente. Trop d’objectifs, peut-être ?',insSame:'Rythme stable : autant que la semaine précédente.',insMorning:'Vous terminez surtout le matin. Gardez le difficile pour tôt.',insAfternoon:'Votre pic : l’après-midi, de 12 h à 17 h.',insEvening:'Vous terminez surtout le soir. Prévoyez des matinées légères.',insNight:'Beaucoup d’objectifs terminés la nuit. Pensez à dormir.',insStuck:'{n} objectifs sont reportés depuis plus de 3 jours. Découpez-les ou supprimez-les.',insOverload:'{d} : {n} prévus, alors que vous en terminez {a} par jour en moyenne. Déplacez-en quelques-uns.',insStreak:'{n} jours d’affilée avec des objectifs terminés. Terminez-en un aujourd’hui pour garder la série.',insTop:'C’est dans « {s} » que vous avez le plus avancé.',insOnTime:'{p} % des objectifs ont été faits le jour prévu.',insStart:'Cochez des objectifs : des observations sur votre rythme apparaîtront ici.',hoursShort:'{n} h',daysShort:'{n} j',goalsPl:{one:'{n} objectif',other:'{n} objectifs'},w1:'Ouvrir Weeky',w2:'Cochez-moi',w3:'Maintenez-moi appuyé, puis glissez-moi vers un autre jour',w4:'Objectif d’hier : ce qui reste passe tout seul à aujourd’hui',w5:'Glissez les jours vers la gauche pour la semaine suivante',w6:'Le menu à gauche : sections, couleurs et langue',w7:'Tâche sans date : touchez le calendrier pour choisir un jour',secWork:'Travail',secLife:'Perso',secHealth:'Santé',th_mono:'Graphite',th_pistachio:'Pistache',th_dusk:'Crépuscule',th_navy:'Nuit et or',th_bordeaux:'Bordeaux',th_sunset:'Coucher de soleil',th_ocean:'Océan',th_coal:'Charbon'}
+};
+// Strings for priority, deadlines, steps, habits, mood, big goals, templates, matrix and the weekly review.
+const I18N_X = {
+ru:{stats:'Итоги',starOn:'Главная',markStar:'Отметить главной',more:'Ещё',moreHint:'дедлайн, повтор, большая цель',deadline:'Дедлайн',noDeadline:'Без дедлайна',dueBy:'до {d}',dueToday:'срок сегодня',dueOver:'срок прошёл',dueSoon:'Скоро срок',steps:'Шаги',stepPh:'Добавить шаг…',stepsDone:'Все шаги готовы — цель выполнена',bigGoal:'Большая цель',bigGoals:'Большие цели',noBigGoal:'Без цели',newBigGoal:'Новая большая цель',bigGoalPh:'Например: Выучить испанский',horizon:'Срок',hMonth:'Этот месяц',hQuarter:'Квартал',hYear:'Этот год',hNone:'Без срока',color:'Цвет',ofN:'{d} из {n}',addStep:'Шаг к цели',achieved:'Достигнута',markAchieved:'Цель достигнута',reopen:'Вернуть в работу',achievedList:'Достигнутые',bigEmpty:'Большая цель собирает недельные шаги: «Выучить испанский», «Пробежать 10 км», «Переехать». Прогресс считается сам из выполненных шагов.',noSteps:'Шагов пока нет. Добавьте первый.',daysLeft:'осталось {n} дн.',habits:'Привычки',habitPh:'Новая привычка…',habitsEmpty:'Отмечайте каждый день: вода, зарядка, чтение. Каждая точка — день недели.',habit:'Привычка',streakN:'серия {n}',habitsToday:'{d} из {n} сегодня',distribute:'Разложить по неделе',distributed:'Разложено по дням: {n}',stuckN:'застряла · {n} дн.',stuckTitle:'Цель переносится уже {n} дн.',stuckHint:'Что с ней сделать?',stuckSplit:'Разбить на шаги',stuckSplitD:'Маленькие шаги легче начать',stuckWeekend:'На выходные',stuckNextWeek:'На следующую неделю',stuckInbox:'Убрать в «Задачи»',stuckInboxD:'Без даты, вернётесь к ней позже',templates:'Шаблоны',fromTemplate:'Добавить из шаблона',tplAdded:'Добавлено целей: {n}',newTemplate:'Новый шаблон',tplName:'Название шаблона',tplItemPh:'Цель в шаблоне…',saveWeekTpl:'Сохранить показанную неделю как шаблон',weekKind:'Неделя',setKind:'Набор',thisWeekW:'Эта неделя',nextWeekW:'Следующая неделя',tplWeekSaved:'Неделя сохранена как шаблон',tplEmptyWeek:'На этой неделе нет целей',tplHint:'Набор целей в одно касание. Применить к дню можно и прямо из карточки дня.',items:'Цели',matrix:'Матрица',listW:'Список',q1:'Сделать сейчас',q2:'Запланировать',q3:'Разобраться быстро',q4:'Потом или удалить',q1d:'главное и срочное',q2d:'главное, не срочно',q3d:'срочно, не главное',q4d:'не главное, не срочно',matrixNote:'Главное — цели со звёздочкой. Срочное — на сегодня, завтра или с дедлайном в ближайшие 2 дня.',qEmpty:'Пусто',mood:'Настроение',moodAsk:'Как день?',moodNotePh:'Пара слов о дне…',moodDone:'Готово',weekReview:'Итоги недели',allStats:'Вся статистика',rDone:'выполнено',rStar:'главных',rHabits:'привычек',rMood:'настроение',moodWeek:'Настроение и дела по дням',moodNone:'Отмечайте настроение в карточке сегодняшнего дня — здесь появится анализ.',insMoodLoad:'В дни с {n}+ целями настроение ниже: {a} против {b}. Не перегружайте дни.',insMoodDone:'Чем больше закрыто целей, тем лучше настроение: {a} против {b}.',insMoodHabits:'В дни, когда закрыты все привычки, настроение выше: {a} против {b}.',insMoodBest:'День с лучшим настроением: {d}.',bestDayN:'Лучший день: {d} · {n}',shareWeek:'Поделиться неделей',shareMade:'Картинка недели сохранена',achievements:'Достижения',achUnlocked:'Новое достижение: {a}',voice:'Голосовой ввод',voiceFail:'Не удалось распознать речь',dueList:'Скоро сроки',dueNone:'Ближайших дедлайнов нет',goalsNone:'Больших целей пока нет',openGoals:'Все большие цели',create:'Создать',edit:'Изменить'},
+en:{stats:'Review',starOn:'Priority',markStar:'Mark as priority',more:'More',moreHint:'deadline, repeat, big goal',deadline:'Deadline',noDeadline:'No deadline',dueBy:'by {d}',dueToday:'due today',dueOver:'overdue',dueSoon:'Due soon',steps:'Steps',stepPh:'Add a step…',stepsDone:'All steps done — goal complete',bigGoal:'Big goal',bigGoals:'Big goals',noBigGoal:'None',newBigGoal:'New big goal',bigGoalPh:'e.g. Learn Spanish',horizon:'Horizon',hMonth:'This month',hQuarter:'Quarter',hYear:'This year',hNone:'No end date',color:'Color',ofN:'{d} of {n}',addStep:'Add a step',achieved:'Achieved',markAchieved:'Goal achieved',reopen:'Reopen',achievedList:'Achieved',bigEmpty:'A big goal gathers your weekly steps: “Learn Spanish”, “Run 10 km”, “Move house”. Progress is counted from the steps you finish.',noSteps:'No steps yet. Add the first one.',daysLeft:'{n}d left',habits:'Habits',habitPh:'New habit…',habitsEmpty:'Tick them off every day: water, workout, reading. Each dot is a day of the week.',habit:'Habit',streakN:'streak {n}',habitsToday:'{d} of {n} today',distribute:'Spread over the week',distributed:'Spread over days: {n}',stuckN:'stuck · {n}d',stuckTitle:'Carried for {n} days',stuckHint:'What should happen to it?',stuckSplit:'Split into steps',stuckSplitD:'Small steps are easier to start',stuckWeekend:'To the weekend',stuckNextWeek:'To next week',stuckInbox:'Move to Tasks',stuckInboxD:'No date, come back to it later',templates:'Templates',fromTemplate:'Add from a template',tplAdded:'Goals added: {n}',newTemplate:'New template',tplName:'Template name',tplItemPh:'Goal in the template…',saveWeekTpl:'Save the shown week as a template',weekKind:'Week',setKind:'Set',thisWeekW:'This week',nextWeekW:'Next week',tplWeekSaved:'Week saved as a template',tplEmptyWeek:'This week has no goals',tplHint:'A set of goals in one tap. You can also apply one right from a day card.',items:'Goals',matrix:'Matrix',listW:'List',q1:'Do now',q2:'Schedule',q3:'Handle quickly',q4:'Later or drop',q1d:'important, urgent',q2d:'important, not urgent',q3d:'urgent, not important',q4d:'neither',matrixNote:'Important = starred goals. Urgent = today, tomorrow or a deadline within 2 days.',qEmpty:'Empty',mood:'Mood',moodAsk:'How’s today?',moodNotePh:'A few words about today…',moodDone:'Done',weekReview:'Week in review',allStats:'All statistics',rDone:'done',rStar:'priority',rHabits:'habits',rMood:'mood',moodWeek:'Mood and goals by day',moodNone:'Log your mood in today’s card and the analysis shows up here.',insMoodLoad:'On days with {n}+ goals your mood is lower: {a} vs {b}. Keep days lighter.',insMoodDone:'The more goals you finish, the better your mood: {a} vs {b}.',insMoodHabits:'Days with every habit done feel better: {a} vs {b}.',insMoodBest:'Best-mood day: {d}.',bestDayN:'Best day: {d} · {n}',shareWeek:'Share the week',shareMade:'Week image saved',achievements:'Achievements',achUnlocked:'Achievement unlocked: {a}',voice:'Voice input',voiceFail:'Couldn’t catch that',dueList:'Deadlines soon',dueNone:'No deadlines coming up',goalsNone:'No big goals yet',openGoals:'All big goals',create:'Create',edit:'Edit'},
+es:{stats:'Resumen',starOn:'Prioritario',markStar:'Marcar como prioritario',more:'Más',moreHint:'fecha límite, repetir, gran objetivo',deadline:'Fecha límite',noDeadline:'Sin fecha límite',dueBy:'hasta {d}',dueToday:'vence hoy',dueOver:'vencido',dueSoon:'Vence pronto',steps:'Pasos',stepPh:'Añadir paso…',stepsDone:'Todos los pasos hechos: objetivo cumplido',bigGoal:'Gran objetivo',bigGoals:'Grandes objetivos',noBigGoal:'Ninguno',newBigGoal:'Nuevo gran objetivo',bigGoalPh:'Ej.: Aprender inglés',horizon:'Plazo',hMonth:'Este mes',hQuarter:'Trimestre',hYear:'Este año',hNone:'Sin plazo',color:'Color',ofN:'{d} de {n}',addStep:'Añadir paso',achieved:'Logrado',markAchieved:'Objetivo logrado',reopen:'Reabrir',achievedList:'Logrados',bigEmpty:'Un gran objetivo reúne tus pasos semanales: «Aprender inglés», «Correr 10 km», «Mudarse». El progreso se calcula con los pasos hechos.',noSteps:'Aún no hay pasos. Añade el primero.',daysLeft:'quedan {n} d',habits:'Hábitos',habitPh:'Nuevo hábito…',habitsEmpty:'Márcalos cada día: agua, ejercicio, lectura. Cada punto es un día de la semana.',habit:'Hábito',streakN:'racha {n}',habitsToday:'{d} de {n} hoy',distribute:'Repartir en la semana',distributed:'Repartidos por días: {n}',stuckN:'atascado · {n} d',stuckTitle:'Lleva {n} días arrastrándose',stuckHint:'¿Qué hacemos con él?',stuckSplit:'Dividir en pasos',stuckSplitD:'Los pasos pequeños cuestan menos',stuckWeekend:'Al fin de semana',stuckNextWeek:'A la semana que viene',stuckInbox:'Mover a Tareas',stuckInboxD:'Sin fecha, vuelve a él más tarde',templates:'Plantillas',fromTemplate:'Añadir desde plantilla',tplAdded:'Objetivos añadidos: {n}',newTemplate:'Nueva plantilla',tplName:'Nombre de la plantilla',tplItemPh:'Objetivo de la plantilla…',saveWeekTpl:'Guardar la semana mostrada como plantilla',weekKind:'Semana',setKind:'Conjunto',thisWeekW:'Esta semana',nextWeekW:'La semana que viene',tplWeekSaved:'Semana guardada como plantilla',tplEmptyWeek:'Esta semana no tiene objetivos',tplHint:'Un conjunto de objetivos en un toque. También puedes aplicarla desde la tarjeta de un día.',items:'Objetivos',matrix:'Matriz',listW:'Lista',q1:'Hacer ya',q2:'Planificar',q3:'Resolver rápido',q4:'Más tarde o borrar',q1d:'importante y urgente',q2d:'importante, no urgente',q3d:'urgente, no importante',q4d:'ni lo uno ni lo otro',matrixNote:'Importante = objetivos con estrella. Urgente = hoy, mañana o con fecha límite en 2 días.',qEmpty:'Vacío',mood:'Ánimo',moodAsk:'¿Qué tal el día?',moodNotePh:'Unas palabras sobre hoy…',moodDone:'Listo',weekReview:'Resumen de la semana',allStats:'Todas las estadísticas',rDone:'hechos',rStar:'prioritarios',rHabits:'hábitos',rMood:'ánimo',moodWeek:'Ánimo y objetivos por día',moodNone:'Anota tu ánimo en la tarjeta de hoy y aquí aparecerá el análisis.',insMoodLoad:'Los días con {n}+ objetivos tu ánimo es más bajo: {a} frente a {b}. Aligera los días.',insMoodDone:'Cuantos más objetivos cierras, mejor ánimo: {a} frente a {b}.',insMoodHabits:'Los días con todos los hábitos hechos te sientes mejor: {a} frente a {b}.',insMoodBest:'Día de mejor ánimo: {d}.',bestDayN:'Mejor día: {d} · {n}',shareWeek:'Compartir la semana',shareMade:'Imagen de la semana guardada',achievements:'Logros',achUnlocked:'Nuevo logro: {a}',voice:'Entrada por voz',voiceFail:'No se entendió',dueList:'Fechas límite próximas',dueNone:'No hay fechas límite próximas',goalsNone:'Aún no hay grandes objetivos',openGoals:'Todos los grandes objetivos',create:'Crear',edit:'Editar'},
+fr:{stats:'Bilan',starOn:'Prioritaire',markStar:'Marquer prioritaire',more:'Plus',moreHint:'échéance, répétition, grand objectif',deadline:'Échéance',noDeadline:'Sans échéance',dueBy:'avant {d}',dueToday:'échéance aujourd’hui',dueOver:'en retard',dueSoon:'Échéance proche',steps:'Étapes',stepPh:'Ajouter une étape…',stepsDone:'Toutes les étapes faites : objectif atteint',bigGoal:'Grand objectif',bigGoals:'Grands objectifs',noBigGoal:'Aucun',newBigGoal:'Nouveau grand objectif',bigGoalPh:'Ex. : Apprendre l’espagnol',horizon:'Horizon',hMonth:'Ce mois-ci',hQuarter:'Trimestre',hYear:'Cette année',hNone:'Sans date',color:'Couleur',ofN:'{d} sur {n}',addStep:'Ajouter une étape',achieved:'Atteint',markAchieved:'Objectif atteint',reopen:'Rouvrir',achievedList:'Atteints',bigEmpty:'Un grand objectif réunit vos étapes de la semaine : « Apprendre l’espagnol », « Courir 10 km », « Déménager ». La progression se calcule avec les étapes faites.',noSteps:'Pas encore d’étapes. Ajoutez la première.',daysLeft:'reste {n} j',habits:'Habitudes',habitPh:'Nouvelle habitude…',habitsEmpty:'Cochez-les chaque jour : eau, sport, lecture. Chaque point est un jour de la semaine.',habit:'Habitude',streakN:'série {n}',habitsToday:'{d} sur {n} aujourd’hui',distribute:'Répartir sur la semaine',distributed:'Répartis sur les jours : {n}',stuckN:'bloqué · {n} j',stuckTitle:'Reporté depuis {n} jours',stuckHint:'Qu’en faire ?',stuckSplit:'Découper en étapes',stuckSplitD:'Les petites étapes se commencent plus facilement',stuckWeekend:'Au week-end',stuckNextWeek:'À la semaine prochaine',stuckInbox:'Déplacer dans Tâches',stuckInboxD:'Sans date, à reprendre plus tard',templates:'Modèles',fromTemplate:'Ajouter depuis un modèle',tplAdded:'Objectifs ajoutés : {n}',newTemplate:'Nouveau modèle',tplName:'Nom du modèle',tplItemPh:'Objectif du modèle…',saveWeekTpl:'Enregistrer la semaine affichée comme modèle',weekKind:'Semaine',setKind:'Ensemble',thisWeekW:'Cette semaine',nextWeekW:'La semaine prochaine',tplWeekSaved:'Semaine enregistrée comme modèle',tplEmptyWeek:'Cette semaine n’a pas d’objectifs',tplHint:'Un ensemble d’objectifs en un geste. Vous pouvez aussi l’appliquer depuis la carte d’un jour.',items:'Objectifs',matrix:'Matrice',listW:'Liste',q1:'À faire maintenant',q2:'À planifier',q3:'À expédier',q4:'Plus tard ou supprimer',q1d:'important et urgent',q2d:'important, pas urgent',q3d:'urgent, pas important',q4d:'ni l’un ni l’autre',matrixNote:'Important = objectifs étoilés. Urgent = aujourd’hui, demain ou échéance sous 2 jours.',qEmpty:'Vide',mood:'Humeur',moodAsk:'Comment ça va ?',moodNotePh:'Quelques mots sur la journée…',moodDone:'OK',weekReview:'Bilan de la semaine',allStats:'Toutes les statistiques',rDone:'faits',rStar:'prioritaires',rHabits:'habitudes',rMood:'humeur',moodWeek:'Humeur et objectifs par jour',moodNone:'Notez votre humeur dans la carte du jour : l’analyse apparaîtra ici.',insMoodLoad:'Les jours avec {n}+ objectifs, l’humeur est plus basse : {a} contre {b}. Allégez vos journées.',insMoodDone:'Plus vous terminez d’objectifs, meilleure est l’humeur : {a} contre {b}.',insMoodHabits:'Les jours où toutes les habitudes sont faites, l’humeur est meilleure : {a} contre {b}.',insMoodBest:'Jour de meilleure humeur : {d}.',bestDayN:'Meilleur jour : {d} · {n}',shareWeek:'Partager la semaine',shareMade:'Image de la semaine enregistrée',achievements:'Succès',achUnlocked:'Nouveau succès : {a}',voice:'Saisie vocale',voiceFail:'Je n’ai pas compris',dueList:'Échéances proches',dueNone:'Aucune échéance proche',goalsNone:'Pas encore de grands objectifs',openGoals:'Tous les grands objectifs',create:'Créer',edit:'Modifier'}
+};
+for (const l in I18N_X) Object.assign(I18N[l], I18N_X[l]);
+const MOOD_NAMES = {ru:['Плохо','Так себе','Нормально','Хорошо','Отлично'], en:['Awful','Meh','Okay','Good','Great'], es:['Fatal','Regular','Normal','Bien','Genial'], fr:['Mal','Bof','Correct','Bien','Super']};
+const TPL_DEF = {
+  ru:[['Утро',['Стакан воды','Зарядка 10 минут','Душ','Завтрак','План на день']],['Уборка',['Пропылесосить','Помыть полы','Протереть пыль','Разобрать стол','Вынести мусор']],['Поездка',['Купить билеты','Забронировать жильё','Документы и страховка','Собрать вещи','Зарядки и адаптеры']]],
+  en:[['Morning',['Glass of water','10-minute workout','Shower','Breakfast','Plan the day']],['Cleaning',['Vacuum','Mop the floors','Dust','Clear the desk','Take out the trash']],['Trip',['Buy tickets','Book a place to stay','Documents and insurance','Pack','Chargers and adapters']]],
+  es:[['Mañana',['Vaso de agua','10 minutos de ejercicio','Ducha','Desayuno','Planear el día']],['Limpieza',['Aspirar','Fregar el suelo','Quitar el polvo','Ordenar el escritorio','Sacar la basura']],['Viaje',['Comprar billetes','Reservar alojamiento','Documentos y seguro','Hacer la maleta','Cargadores y adaptadores']]],
+  fr:[['Matin',['Verre d’eau','10 minutes de sport','Douche','Petit-déjeuner','Planifier la journée']],['Ménage',['Passer l’aspirateur','Laver le sol','Faire la poussière','Ranger le bureau','Sortir les poubelles']],['Voyage',['Acheter les billets','Réserver le logement','Papiers et assurance','Faire la valise','Chargeurs et adaptateurs']]]
+};
+const ACH_TXT = {
+  ru:{first:['Первый шаг','Закройте первую цель'],ten:['Разогрев','10 выполненных целей'],hundred:['Сотня','100 выполненных целей'],streak7:['Неделя подряд','7 дней подряд с выполненными целями'],streak30:['Месяц без пропусков','30 дней подряд'],perfect:['Идеальная неделя','Все цели недели выполнены, минимум 7'],early:['Ранняя пташка','5 целей до 9 утра'],stars:['Главное — первым','10 главных целей выполнено'],ontime:['Точно в срок','10 целей закрыто до дедлайна'],habit7:['Привычка закрепилась','Серия 7 дней у привычки'],mood7:['Дневник настроения','Настроение отмечено 7 дней подряд'],biggoal:['Большая победа','Достигнута большая цель']},
+  en:{first:['First step','Finish your first goal'],ten:['Warm-up','10 goals done'],hundred:['Century','100 goals done'],streak7:['Seven in a row','7 days in a row with goals done'],streak30:['Unbroken month','30 days in a row'],perfect:['Perfect week','Every goal of a week done, at least 7'],early:['Early bird','5 goals done before 9 am'],stars:['First things first','10 priority goals done'],ontime:['Right on time','10 goals done before the deadline'],habit7:['Habit formed','A 7-day habit streak'],mood7:['Mood journal','Mood logged 7 days in a row'],biggoal:['Big win','A big goal achieved']},
+  es:{first:['Primer paso','Completa tu primer objetivo'],ten:['Calentamiento','10 objetivos hechos'],hundred:['Centenar','100 objetivos hechos'],streak7:['Siete seguidos','7 días seguidos con objetivos hechos'],streak30:['Mes sin fallos','30 días seguidos'],perfect:['Semana perfecta','Todos los objetivos de una semana, mín. 7'],early:['Madrugador','5 objetivos antes de las 9'],stars:['Lo primero, primero','10 objetivos prioritarios hechos'],ontime:['Justo a tiempo','10 objetivos antes de la fecha límite'],habit7:['Hábito formado','Racha de 7 días en un hábito'],mood7:['Diario de ánimo','Ánimo anotado 7 días seguidos'],biggoal:['Gran victoria','Un gran objetivo logrado']},
+  fr:{first:['Premier pas','Terminez votre premier objectif'],ten:['Échauffement','10 objectifs faits'],hundred:['Centaine','100 objectifs faits'],streak7:['Sept d’affilée','7 jours d’affilée avec des objectifs faits'],streak30:['Mois sans faute','30 jours d’affilée'],perfect:['Semaine parfaite','Tous les objectifs d’une semaine, au moins 7'],early:['Lève-tôt','5 objectifs avant 9 h'],stars:['L’essentiel d’abord','10 objectifs prioritaires faits'],ontime:['Pile à l’heure','10 objectifs avant l’échéance'],habit7:['Habitude prise','Série de 7 jours pour une habitude'],mood7:['Journal d’humeur','Humeur notée 7 jours d’affilée'],biggoal:['Grande victoire','Un grand objectif atteint']}
 };
 const LOCALES = {ru:'ru-RU',en:'en-US',es:'es-ES',fr:'fr-FR'};
 let lang = 'ru';
@@ -579,13 +784,8 @@ const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x,y)
 
 const THEMES = {
   mono:{stops:['#F1F1EF','#CFCFCC','#8A8A88','#2E2E2F'],bg:'#F7F7F5',paper:'#FFFFFF',ink:'#1A1A1A',muted:'#76767A',line:'rgba(26,26,26,.12)',accent:'#FF5A1F',accentInk:'#FFFFFF',inkDark:'#262626',inkLight:'#F5F5F3',note:'#FFFFFF',noteInk:'#1A1A1A',noteLine:'rgba(26,26,26,.07)'},
-  pistachio:{stops:['#F5EEDF','#E6DFC2','#C7D2A2','#9CB57B'],bg:'#F8F2E6',paper:'#FFFCF5',ink:'#2C3322',muted:'#7A7C64',line:'rgba(44,51,34,.13)',accent:'#5E7F34',accentInk:'#FFFFFF',inkDark:'#2C3322',inkLight:'#FBF8EF',note:'#FFFDF7',noteInk:'#2C3322',noteLine:'rgba(44,51,34,.08)'},
-  dusk:{stops:['#DCE5FF','#A9BBF7','#7C7CE3','#4B32A3'],bg:'#EEF1FF',paper:'#FFFFFF',ink:'#1D1A45',muted:'#6B6A93',line:'rgba(29,26,69,.12)',accent:'#5B3FD0',accentInk:'#FFFFFF',inkDark:'#1D1A45',inkLight:'#F4F1FF',note:'#FFFFFF',noteInk:'#1D1A45',noteLine:'rgba(29,26,69,.07)'},
+  coal:{stops:['#3C3C3F','#2E2E31','#222224','#151516'],bg:'#0F0F10',paper:'#1C1C1E',ink:'#F2F2F0',muted:'#8E8E93',line:'rgba(242,242,240,.13)',accent:'#FF6A2B',accentInk:'#FFFFFF',inkDark:'#111111',inkLight:'#F2F2F0',note:'#26262A',noteInk:'#F2F2F0',noteLine:'rgba(242,242,240,.06)',dark:true},
   navy:{stops:['#2E4373','#223459','#172642','#0D172C'],bg:'#0A1222',paper:'#121E36',ink:'#F2E8D0',muted:'#9AA3B8',line:'rgba(242,232,208,.14)',accent:'#D9B35F',accentInk:'#14182A',inkDark:'#0D172C',inkLight:'#E9C987',note:'#F3E7C9',noteInk:'#1A2340',noteLine:'rgba(26,35,64,.09)',dark:true},
-  bordeaux:{stops:['#F2E6D4','#DDBBA4','#A4505B','#5C1229'],bg:'#F7EEE2',paper:'#FFF9F1',ink:'#3A0E1A',muted:'#8B6B66',line:'rgba(58,14,26,.13)',accent:'#86203A',accentInk:'#FFF5EA',inkDark:'#3A0E1A',inkLight:'#F7E9D7',note:'#FFF9F1',noteInk:'#3A0E1A',noteLine:'rgba(58,14,26,.07)'},
-  sunset:{stops:['#FFEBD8','#FCBF9A','#E57D62','#913452'],bg:'#FFF4EA',paper:'#FFFFFF',ink:'#3B1726',muted:'#98706A',line:'rgba(59,23,38,.12)',accent:'#DE5238',accentInk:'#FFFFFF',inkDark:'#3B1726',inkLight:'#FFF2E8',note:'#FFFFFF',noteInk:'#3B1726',noteLine:'rgba(59,23,38,.07)'},
-  ocean:{stops:['#E0F4EF','#A0D8CD','#40A0A5','#10475C'],bg:'#EEF8F6',paper:'#FFFFFF',ink:'#0E2E3A',muted:'#5D8490',line:'rgba(14,46,58,.12)',accent:'#0E7C87',accentInk:'#FFFFFF',inkDark:'#0E2E3A',inkLight:'#EAF8F5',note:'#FFFFFF',noteInk:'#0E2E3A',noteLine:'rgba(14,46,58,.07)'},
-  coal:{stops:['#3C3C3F','#2E2E31','#222224','#151516'],bg:'#0F0F10',paper:'#1C1C1E',ink:'#F2F2F0',muted:'#8E8E93',line:'rgba(242,242,240,.13)',accent:'#FF6A2B',accentInk:'#FFFFFF',inkDark:'#111111',inkLight:'#F2F2F0',note:'#26262A',noteInk:'#F2F2F0',noteLine:'rgba(242,242,240,.06)',dark:true}
 };
 const BAND_CACHE = {};
 function bandsOf(id){
@@ -593,14 +793,49 @@ function bandsOf(id){
   const th = THEMES[id];
   return BAND_CACHE[id] = ramp(th.stops, 7).map(bg => ({bg, ink: contrast(bg, th.inkDark) >= contrast(bg, th.inkLight) ? th.inkDark : th.inkLight}));
 }
-const SEC_COLORS = ['#E4572E','#F2A541','#E9C46A','#8AB17D','#2A9D8F','#4C8BF5','#6C5CE7','#B565A7','#E56B9F','#8D6E63','#546E7A','#3E9C5A'];
+// Section marks: simple one-colour outline figures, drawn in the theme's own ink.
+const SEC_ICONS = {
+  work: '<rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3.5 12.5h17"/>',
+  home: '<path d="M4 11l8-6.5 8 6.5"/><path d="M6.5 9.5v10h11v-10"/><path d="M10 19.5v-5h4v5"/>',
+  heart: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>',
+  sport: '<path d="M6.5 7.5v9M17.5 7.5v9M3.5 10v4M20.5 10v4M6.5 12h11"/>',
+  study: '<path d="M5 5.5A1.5 1.5 0 0 1 6.5 4H19v14H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19"/>',
+  shop: '<path d="M3.5 4.5h2l2 10.5h10l2-7.5H6.5"/><circle cx="9.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/>',
+  travel: '<path d="M21 3.5L3 11l7 2.5L12.5 21z"/><path d="M10 13.5L21 3.5"/>',
+  money: '<circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.3c-.6-.8-1.5-1.3-2.5-1.3-1.4 0-2.5.8-2.5 2s1.1 1.6 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-1.9-.5-2.5-1.3M12 6.5V8M12 16v1.5"/>',
+  people: '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.5-3 2.7-5 5.5-5s5 2 5.5 5"/><circle cx="16.5" cy="9" r="2.5"/><path d="M16.5 14c2.2 0 3.7 1.6 4 4"/>',
+  pet: '<circle cx="7" cy="10.5" r="1.7"/><circle cx="10.3" cy="6.8" r="1.7"/><circle cx="13.7" cy="6.8" r="1.7"/><circle cx="17" cy="10.5" r="1.7"/><path d="M12 12.2c-2.4 0-4.8 2.9-4.8 5.3 0 1.4 1.1 2.4 2.5 2.4.9 0 1.5-.5 2.3-.5s1.4.5 2.3.5c1.4 0 2.5-1 2.5-2.4 0-2.4-2.4-5.3-4.8-5.3z"/>',
+  music: '<path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+  idea: '<path d="M9.5 17.5h5M10.5 21h3"/><path d="M12 3a6 6 0 0 0-3.4 10.9c.6.4.9 1.1.9 1.8v1.8h5v-1.8c0-.7.3-1.4.9-1.8A6 6 0 0 0 12 3z"/>'
+};
+const SEC_ICON_IDS = Object.keys(SEC_ICONS);
+const secIcon = (sec, size) => sv(SEC_ICONS[sec && SEC_ICONS[sec.icon] ? sec.icon : 'work'], size || 14, 1.9);
 
 /* ================= icons ================= */
 // The Weeky mark: a heavy W over seven dots, one per weekday. Same geometry as the app icons.
 const LOGO_MARK = '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M14 18H27.5L34.7 50L42.8 26H57.2L65.3 50L72.5 18H86L73.4 66H59L50 40.4L41 66H26.6Z"/>'
   + [.35, .45, .55, .66, .77, .88, 1].map((o, i) => `<circle cx="${23 + i * 9}" cy="82" r="3.2" fill="currentColor" opacity="${o}"/>`).join('') + '</svg>';
 const sv = (p, s=18, w=2) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const STAR_D = 'M12 2.8l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.6l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z';
 const ICON = {
+  star: `<svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="${STAR_D}"/></svg>`,
+  starBtn: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="${STAR_D}"/></svg>`,
+  flag: sv('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>', 12, 2.4),
+  flagBig: sv('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>', 18, 2.2),
+  target: sv('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>', 12, 2.4),
+  targetBig: sv('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".9" fill="currentColor"/>', 22, 2),
+  stack: sv('<rect x="4" y="4" width="16" height="6" rx="2"/><rect x="4" y="14" width="16" height="6" rx="2"/>', 18, 2),
+  stackBig: sv('<rect x="4" y="4" width="16" height="6" rx="2"/><rect x="4" y="14" width="16" height="6" rx="2"/>', 22, 2),
+  mic: sv('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>', 20, 2),
+  alert: sv('<path d="M12 3.5l9 16H3z"/><path d="M12 10v4M12 17v.01"/>', 12, 2.4),
+  flame: sv('<path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.4-5.3 3.6-8.3.3 2 1.4 3.3 2.6 3.7.1-2.6 1.2-5 3.3-7.2.5 3.7 3.5 6 3.5 11 0 3.9-2.6 7-6.5 7z"/>', 11, 2.4),
+  share: sv('<path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>', 18, 2.2),
+  matrix: sv('<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>', 16, 2),
+  spread: sv('<path d="M4 6h16M4 12h10M4 18h6"/><path d="M17 15l3 3-3 3"/>', 16, 2.2),
+  trophy: sv('<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8.5 20h7M10 17h4"/>', 22, 2),
+  sun: sv('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6L6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/>', 22, 2),
+  flameBig: sv('<path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.2 2.4-5.3 3.6-8.3.3 2 1.4 3.3 2.6 3.7.1-2.6 1.2-5 3.3-7.2.5 3.7 3.5 6 3.5 11 0 3.9-2.6 7-6.5 7z"/>', 22, 2),
+  edit: sv('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>', 16, 2.2),
   tick:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>',
   tickS: sv('<path d="M5 12.5l4.2 4.2L19 7"/>', 14, 2.6),
   plus: sv('<path d="M12 5v14M5 12h14"/>', 16, 2.4),
@@ -646,6 +881,10 @@ function sanTask(id, d){
     repeat: REPEAT_KEYS[d.repeat] ? d.repeat : null,
     series: typeof d.series === 'string' && ID_RE.test(d.series) ? d.series : null,
     remindFrom: num(d.remindFrom, 0),
+    star: !!d.star, deadline: typeof d.deadline === 'string' && KEY_RE.test(d.deadline) ? d.deadline : null,
+    steps: Array.isArray(d.steps) ? d.steps.filter(p => p && typeof p.t === 'string' && p.t.trim()).slice(0, 40)
+      .map(p => ({id: typeof p.id === 'string' && ID_RE.test(p.id) ? p.id : uid('p'), t: p.t.slice(0, 200), done: !!p.done})) : [],
+    goal: typeof d.goal === 'string' && ID_RE.test(d.goal) ? d.goal : null,
     id, title: String(d.title == null ? '' : d.title).slice(0, 300) || '…', date,
     section: typeof d.section === 'string' && d.section ? d.section : null,
     done: !!d.done, doneAt: d.done ? num(d.doneAt, 0) : null,
@@ -656,21 +895,38 @@ function sanTask(id, d){
 }
 function sanSections(arr){
   if (!Array.isArray(arr)) return [];
-  return arr.filter(s => s && typeof s.id === 'string' && /^[\w-]{1,40}$/.test(s.id) && typeof s.name === 'string' && /^#[0-9a-f]{6}$/i.test(s.color))
-    .map(s => ({id: s.id, name: s.name.slice(0, 40), color: s.color}));
+  const legacy = {s_work: 'work', s_life: 'home', s_health: 'heart'}; // sections made before icons had colours
+  return arr.filter(s => s && typeof s.id === 'string' && /^[\w-]{1,40}$/.test(s.id) && typeof s.name === 'string')
+    .map((s, i) => ({id: s.id, name: s.name.slice(0, 40), icon: SEC_ICONS[s.icon] ? s.icon : (legacy[s.id] || SEC_ICON_IDS[(i + 3) % SEC_ICON_IDS.length])}));
 }
 function sanState(raw){
   const tasks = {};
   if (raw && raw.tasks && typeof raw.tasks === 'object') for (const id in raw.tasks){ const x = sanTask(id, raw.tasks[id]); if (x) tasks[id] = x; }
+  const obj = v => v && typeof v === 'object' && !Array.isArray(v);
+  const habits = Array.isArray(raw && raw.habits) ? raw.habits.filter(h => h && ID_RE.test(h.id) && typeof h.name === 'string').slice(0, 30)
+    .map(h => ({id: h.id, name: h.name.slice(0, 40)})) : [];
+  const habitLog = {};
+  if (raw && obj(raw.habitLog)) for (const k in raw.habitLog) if (KEY_RE.test(k) && Array.isArray(raw.habitLog[k])) habitLog[k] = raw.habitLog[k].filter(id => typeof id === 'string');
+  const mood = {};
+  if (raw && obj(raw.mood)) for (const k in raw.mood){ const m = raw.mood[k]; if (KEY_RE.test(k) && m && m.v >= 1 && m.v <= 5) mood[k] = {v: Math.round(m.v), note: typeof m.note === 'string' ? m.note.slice(0, 140) : ''}; }
+  const goals = Array.isArray(raw && raw.goals) ? raw.goals.filter(g => g && ID_RE.test(g.id) && typeof g.title === 'string').slice(0, 50)
+    .map(g => ({id: g.id, title: g.title.slice(0, 80), h: ['month', 'quarter', 'year', 'none'].includes(g.h) ? g.h : 'none',
+      due: typeof g.due === 'string' && KEY_RE.test(g.due) ? g.due : null, achieved: !!g.achieved,
+      createdAt: Number.isFinite(g.createdAt) ? g.createdAt : 0})) : [];
+  const templates = Array.isArray(raw && raw.templates) ? raw.templates.filter(p => p && ID_RE.test(p.id) && typeof p.name === 'string' && Array.isArray(p.items)).slice(0, 40)
+    .map(p => ({id: p.id, name: p.name.slice(0, 40), kind: p.kind === 'week' ? 'week' : 'set', items: p.items.filter(i => i && typeof i.t === 'string' && i.t.trim()).slice(0, 60)
+      .map(i => ({t: i.t.slice(0, 200), time: typeof i.time === 'string' && TIME_RE.test(i.time) ? i.time : null, section: typeof i.section === 'string' ? i.section : null,
+        star: !!i.star, off: Number.isInteger(i.off) && i.off >= 0 && i.off <= 6 ? i.off : 0}))})) : null;
+  const ach = raw && obj(raw.ach) ? Object.fromEntries(Object.entries(raw.ach).filter(([, v]) => Number.isFinite(v))) : null;
   return { tasks, sections: sanSections(raw && raw.sections), lang: raw && I18N[raw.lang] ? raw.lang : detectLang(), theme: raw && THEMES[raw.theme] ? raw.theme : 'mono',
-    haptics: !(raw && raw.haptics === false), sound: !(raw && raw.sound === false) };
+    haptics: !(raw && raw.haptics === false), sound: !(raw && raw.sound === false), habits, habitLog, mood, goals, templates, ach };
 }
 function defaultState(){
   lang = detectLang();
   const sections = [
-    {id:'s_work', name:t('secWork'), color:'#4C8BF5'},
-    {id:'s_life', name:t('secLife'), color:'#E56B9F'},
-    {id:'s_health', name:t('secHealth'), color:'#3E9C5A'}
+    {id:'s_work', name:t('secWork'), icon:'work'},
+    {id:'s_life', name:t('secLife'), icon:'home'},
+    {id:'s_health', name:t('secHealth'), icon:'heart'}
   ];
   const theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'coal' : 'mono';
   const now = Date.now(), today = parseKey(TK), tasks = {};
@@ -687,11 +943,11 @@ function defaultState(){
   mk(t('w6'), 2, null);
   mk(t('w7'), null, null);
   mk(t('w8'), null, null);
-  return {tasks, sections, lang, theme, haptics: true, sound: true};
+  return {tasks, sections, lang, theme, haptics: true, sound: true, habits: [], habitLog: {}, mood: {}, goals: [], templates: null, ach: null};
 }
 function loadLocal(){ try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : null; } catch(_) { return null; } }
 let saveT = 0;
-function persist(){ clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(_){} }, 120); }
+function persist(){ clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(_){} }, 120); scheduleAch(); }
 
 let S;
 { const raw = loadLocal(); if (raw) S = sanState(raw); else { S = defaultState(); persist(); } }
@@ -701,7 +957,8 @@ const ui = {
   weekStart: startOfWeek(parseKey(TK)), open: new Set([TK]), showDone: new Set(), inboxOpen: false, assignFor: null,
   filter: null, completing: new Set(), anim: false, dragId: null, renderPending: false, suppress: false,
   calMode: 'month', calMonth: new Date(parseKey(TK).getFullYear(), parseKey(TK).getMonth(), 1), calSel: TK,
-  doneGroup: 'day', doneFilter: null, screen: null, newSecColor: null, newSecName: '', confirmSec: null
+  doneGroup: 'day', doneFilter: null, screen: null, newSecIcon: null, newSecName: '', confirmSec: null,
+  noteTab: 'tasks', upMode: 'list', revWeek: null, moodOpen: false
 };
 const TH = () => THEMES[S.theme] || THEMES.mono;
 const secOf = id => id ? S.sections.find(s => s.id === id) || null : null;
@@ -712,10 +969,12 @@ const byTimeOrder = (a, b) => {
   if (a.time && b.time) return a.time < b.time ? -1 : a.time > b.time ? 1 : byOrder(a, b);
   return a.time ? -1 : b.time ? 1 : byOrder(a, b);
 };
+// Starred (priority) goals always come first in a day, then by time, then by hand-made order.
+const byPri = (a, b) => ((b.star ? 1 : 0) - (a.star ? 1 : 0)) || byTimeOrder(a, b);
 const allTasks = () => Object.values(S.tasks);
-const pendingFor = k => allTasks().filter(x => !x.done && x.date && eff(x) === k && filterOk(x)).sort(byTimeOrder);
+const pendingFor = k => allTasks().filter(x => !x.done && x.date && eff(x) === k && filterOk(x)).sort(byPri);
 const doneFor = k => allTasks().filter(x => x.done && x.date === k && filterOk(x)).sort((a, b) => a.doneAt - b.doneAt);
-const inboxTasks = () => allTasks().filter(x => !x.done && !x.date && filterOk(x)).sort(byOrder);
+const inboxTasks = () => allTasks().filter(x => !x.done && !x.date && filterOk(x)).sort((a, b) => ((b.star ? 1 : 0) - (a.star ? 1 : 0)) || byOrder(a, b));
 const isCurrentWeek = () => keyOf(ui.weekStart) === keyOf(startOfWeek(parseKey(TK)));
 
 /* ================= mutations (everything is kept on this device) ================= */
@@ -725,7 +984,7 @@ function saveSettings(){ persist(); }
 function newTask(title, date, section, extra){
   const list = date ? pendingFor(date) : inboxTasks();
   const last = list[list.length - 1];
-  return Object.assign({id: uid('t'), title, date, section, done:false, doneAt:null, createdAt: Date.now(), order: last ? Math.max(last.order + 1, Date.now()) : Date.now(), origDate: date, carried:0, time:null, remind:null, repeat:null, series:null, remindFrom:0}, extra || {});
+  return Object.assign({id: uid('t'), title, date, section, done:false, doneAt:null, createdAt: Date.now(), order: last ? Math.max(last.order + 1, Date.now()) : Date.now(), origDate: date, carried:0, time:null, remind:null, repeat:null, series:null, remindFrom:0, star:false, deadline:null, steps:[], goal:null}, extra || {});
 }
 function nextDate(k, rep){
   let d = parseKey(k);
@@ -767,23 +1026,27 @@ function taskRow(x, o){
   const sec = secOf(x.section);
   const carry = (!x.done && x.date && x.date < TK) ? diffDays(x.date, TK) : 0;
   const cls = ['task'];
-  if (sec) cls.push('has-sec');
   if (x.done) cls.push('is-done');
+  if (x.star) cls.push('starred');
   if (ui.completing.has(x.id)) cls.push('completing');
   if (ui.dragId === x.id) cls.push('dragging-src');
-  const style = sec ? ` style="--sec:${sec.color}"` : '';
-  const meta = [];
+  const meta = [], steps = x.steps || [], goal = goalOf(x.goal);
   if (x.time) meta.push(`<span class="t-time">${x.remind != null && !x.done ? ICON.bell : ICON.clock}${x.time}</span>`);
-  if (sec && !o.noSec) meta.push(`<span class="t-sec"><i></i>${esc(sec.name)}</span>`);
+  if (x.deadline && !x.done) meta.push(dlChip(x.deadline));
+  if (steps.length) meta.push(`<span class="t-steps">${stepRing(steps)}${steps.filter(p => p.done).length}/${steps.length}</span>`);
+  if (sec && !o.noSec) meta.push(`<span class="t-sec">${secIcon(sec, 12)}${esc(sec.name)}</span>`);
+  if (goal) meta.push(`<span class="t-goal">${ICON.target}${esc(goal.title)}</span>`);
   if (x.repeat && !x.done) meta.push(`<span class="t-rep">${ICON.rep}${esc(t(REPEAT_KEYS[x.repeat]))}</span>`);
-  if (carry) meta.push(`<span class="t-carry">${ICON.carry}${esc(t('carried', {n: carry}))}</span>`);
+  // three days of carrying over turns the note into an offer to help
+  if (carry >= 3) meta.push(`<span class="t-stuck" data-act="stuck-help" role="button">${ICON.alert}${esc(t('stuckN', {n: carry}))}</span>`);
+  else if (carry) meta.push(`<span class="t-carry">${ICON.carry}${esc(t('carried', {n: carry}))}</span>`);
   if (o.time && x.doneAt) meta.push(`<span>✓ ${esc(fmtTime(x.doneAt))}</span>`);
   if (o.dateMeta && x.date && x.date !== TK) meta.push(`<span>${esc(shortDate(x.date))}</span>`);
   const act = x.done ? 'uncheck' : 'check';
   const grip = !x.done && !o.noGrip ? `<span class="t-grip" aria-hidden="true">${ICON.grip}</span>` : '';
-  return `<li class="${cls.join(' ')}" data-id="${x.id}"${style}>`
+  return `<li class="${cls.join(' ')}" data-id="${x.id}">`
     + `<button class="check" data-act="${act}" aria-pressed="${x.done}" aria-label="${esc(x.done ? t('restored') : t('doneList'))}">${ICON.tick}</button>`
-    + `<button class="t-main" data-act="edit"><span class="t-title"><span class="tx">${esc(x.title)}</span></span>${meta.length ? `<span class="t-meta">${meta.join('')}</span>` : ''}</button>`
+    + `<button class="t-main" data-act="edit"><span class="t-title">${x.star ? `<span class="t-star" aria-label="${esc(t('starOn'))}">${ICON.star}</span>` : ''}<span class="tx">${esc(x.title)}</span></span>${meta.length ? `<span class="t-meta">${meta.join('')}</span>` : ''}</button>`
     + (o.assign ? `<button class="t-assign${ui.assignFor === x.id ? ' on' : ''}" data-act="assign" aria-label="${esc(t('assignDay'))}">${ICON.cal}</button>` : '')
     + grip + `</li>`;
 }
@@ -846,35 +1109,48 @@ function renderFilter(){
   const el = $('#filterBar'), sec = secOf(ui.filter);
   if (!sec){ ui.filter = null; el.hidden = true; el.innerHTML = ''; return; }
   el.hidden = false;
-  el.innerHTML = `<span>${esc(t('filterOn'))}:</span><button class="chip sec sel" style="--c:${sec.color}" data-act="clear-filter"><i></i>${esc(sec.name)} ${sv('<path d="M6 6l12 12M18 6L6 18"/>', 14, 2.6)}</button>`;
+  el.innerHTML = `<span>${esc(t('filterOn'))}:</span><button class="chip sel" data-act="clear-filter">${secIcon(sec, 15)}${esc(sec.name)} ${sv('<path d="M6 6l12 12M18 6L6 18"/>', 14, 2.6)}</button>`;
 }
+// The sticky note holds two kinds of things that belong to no single day: undated tasks and daily habits.
 function renderInbox(){
-  const el = $('#inbox'), list = inboxTasks(), open = ui.inboxOpen;
+  const el = $('#inbox'), list = inboxTasks(), open = ui.inboxOpen, tab = ui.noteTab;
   const keep = captureFocus();
   el.classList.toggle('open', open);
-  const prev = list.slice(0, 3).map(x => x.title).join(' · ');
-  el.innerHTML = `<button class="note-head" data-act="inbox-toggle" aria-expanded="${open}">`
-    + `<span class="note-title">${esc(t('inbox'))}</span><span class="note-count">${list.length}</span><span class="note-chev">${sv('<path d="M6 9l6 6 6-6"/>', 20, 2.4)}</span>`
-    + (open ? '' : `<span class="note-prev">${esc(prev || t('inboxNone'))}</span>`)
-    + `</button><div class="note-body"><div class="note-inner"><div class="note-pad">`
-    + (list.length ? `<ul class="tasks" data-list="inbox">${list.map(x => taskRow(x, {assign:true}) + (ui.assignFor === x.id ? assignStrip(x.id) : '')).join('')}</ul>` : `<p class="empty">${esc(t('inboxEmpty'))}</p>`)
-    + `<form class="note-add" data-form="inbox-add"><span class="plus">${ICON.plus}</span><input id="inboxInput" type="text" maxlength="200" autocomplete="off" enterkeyhint="done" placeholder="${esc(t('inboxPh'))}" aria-label="${esc(t('inboxPh'))}"><button type="submit" class="note-go" aria-label="${esc(t('add'))}">${ICON.arrow}</button></form>`
+  const hs = habitStats(TK);
+  // Tasks always head the note; Habits is a secondary switch that falls back to Tasks when the note closes.
+  const title = t('inbox'), habitsOn = open && tab === 'habits';
+  el.classList.toggle('habits-on', habitsOn);
+  const sw = `<button class="note-sw${habitsOn ? ' on' : ''}" data-act="note-tab" aria-pressed="${habitsOn}">${esc(t('habits'))}${hs.total ? `<b>${hs.done}/${hs.total}</b>` : ''}</button>`;
+  const prev = list.slice(0, 3).map(x => x.title).join(' · ') || t('inboxNone');
+  el.innerHTML = `<div class="note-head"><button class="note-main" data-act="note-main" aria-expanded="${open}"><span class="note-title">${esc(title)}</span><span class="note-count">${list.length}</span></button>`
+    + sw + `<button class="note-chev" data-act="inbox-toggle" aria-label="${esc(title)}">${sv('<path d="M6 9l6 6 6-6"/>', 20, 2.4)}</button>`
+    + (open ? '' : `<button class="note-prev" data-act="inbox-toggle">${esc(prev)}</button>`)
+    + `</div><div class="note-body"><div class="note-inner"><div class="note-pad">`
+    + (habitsOn ? habitsBody() : inboxBody(list))
     + `</div></div></div>`;
   restoreFocus(keep);
+}
+function inboxBody(list){
+  return (list.length ? `<ul class="tasks" data-list="inbox">${list.map(x => taskRow(x, {assign:true}) + (ui.assignFor === x.id ? assignStrip(x.id) : '')).join('')}</ul>` : `<p class="empty">${esc(t('inboxEmpty'))}</p>`)
+    + (list.length ? `<button class="spread-btn" data-act="spread">${ICON.spread}${esc(t('distribute'))}</button>` : '')
+    + `<form class="note-add" data-form="inbox-add"><span class="plus">${ICON.plus}</span><input id="inboxInput" type="text" maxlength="200" autocomplete="off" enterkeyhint="done" placeholder="${esc(t('inboxPh'))}" aria-label="${esc(t('inboxPh'))}">${micBtn('inboxInput')}<button type="submit" class="note-go" aria-label="${esc(t('add'))}">${ICON.arrow}</button></form>`;
 }
 function bandHTML(i){
   const d = addDays(ui.weekStart, i), k = keyOf(d), b = bandsOf(S.theme)[i];
   const pend = pendingFor(k), done = doneFor(k), open = ui.open.has(k), today = k === TK, past = k < TK;
-  const dots = pend.slice(0, 5).map(x => { const s = secOf(x.section); return `<i${s ? ` style="--c:${s.color}"` : ''}></i>`; }).join('') + (pend.length > 5 ? `<b>+${pend.length - 5}</b>` : '');
-  const showDone = ui.showDone.has(k);
-  return `<section class="band${open ? ' open' : ''}${today ? ' today' : ''}${past ? ' past' : ''}" data-day="${k}" data-drop="day" style="--b-bg:${b.bg};--b-ink:${b.ink}">`
+  const dots = pend.slice(0, 5).map(x => x.star ? '<i class="st"></i>' : '<i></i>').join('') + (pend.length > 5 ? `<b>+${pend.length - 5}</b>` : '');
+  const showDone = ui.showDone.has(k), mood = S.mood[k], withMood = today || !!mood;
+  return `<section class="band${open ? ' open' : ''}${today ? ' today' : ''}${past ? ' past' : ''}${withMood ? ' mb' : ''}" data-day="${k}" data-drop="day" style="--b-bg:${b.bg};--b-ink:${b.ink}">`
     + `<button class="band-head" data-act="toggle" aria-expanded="${open}">`
     + `<span class="band-name">${esc(dayName(d))}</span>`
     + `<span class="band-side">${dots ? `<span class="dots">${dots}</span>` : ''}${done.length ? `<span class="done-n">${ICON.tickS}${done.length}</span>` : ''}</span>`
     + `<span class="band-date"><span>${esc(dateLong(d))}</span>${today ? `<span class="pill">${esc(t('today'))}</span>` : ''}</span>`
-    + `</button><div class="band-body"><div class="band-inner"><div class="band-pad">`
+    + `</button>`
+    + (withMood ? moodButton(k) : '') + (today && open && ui.moodOpen ? moodPop() : '')
+    + `<div class="band-body"><div class="band-inner"><div class="band-pad">`
+    + (today ? dueStrip() : '')
     + (pend.length ? `<ul class="tasks" data-list="${k}">${pend.map(x => taskRow(x)).join('')}</ul>` : `<p class="empty">${esc(t(past ? 'pastDay' : 'emptyDay'))}</p>`)
-    + (past ? '' : `<button class="add-row" data-act="add-day"><span class="plusbox">${ICON.plus}</span><span>${esc(t('addGoal'))}</span></button>`)
+    + (past ? '' : `<div class="add-wrap"><button class="add-row" data-act="add-day"><span class="plusbox">${ICON.plus}</span><span>${esc(t('addGoal'))}</span></button><button class="tpl-btn" data-act="tpl-day" aria-label="${esc(t('fromTemplate'))}" title="${esc(t('fromTemplate'))}">${ICON.stack}</button></div>`)
     + (done.length ? `<button class="done-toggle" data-act="toggle-done" aria-expanded="${showDone}">${ICON.tickS}${esc(t('doneList'))} · ${done.length}${ICON.chev}</button>`
         + (showDone ? `<ul class="tasks done-list">${done.map(x => taskRow(x, {time:true})).join('')}</ul>` : '') : '')
     + `</div></div></div></section>`;
@@ -882,8 +1158,10 @@ function bandHTML(i){
 function renderWeek(){
   const w = $('#week'), src = ui.dragId && document.querySelector(`#week .task.dragging-src`);
   if (src) $('#holder').appendChild(src); // keep the touch target alive while dragging
+  const keep = captureFocus();
   let h = ''; for (let i = 0; i < 7; i++) h += bandHTML(i);
   w.innerHTML = h;
+  restoreFocus(keep);
 }
 function renderFoot(){
   const n = allTasks().filter(x => x.done).length, up = allTasks().filter(x => !x.done).length;
@@ -898,8 +1176,10 @@ function renderAll(){
   if ($('#drawerWrap').classList.contains('open')) renderDrawer();
   if (ui.screen === 'cal') renderCal();
   if (ui.screen === 'done') renderDone();
-  if (ui.screen === 'stats') renderStats();
+  if (ui.screen === 'stats') renderReview();
   if (ui.screen === 'up') renderUp();
+  if (ui.screen === 'goals') renderGoals();
+  if (ui.screen === 'tpl') renderTpl();
 }
 function captureFocus(){
   const a = document.activeElement;
@@ -926,10 +1206,10 @@ function renderDrawer(){
   const keep = captureFocus();
   const pendAll = allTasks().filter(x => !x.done);
   const doneN = allTasks().filter(x => x.done).length;
-  if (!ui.newSecColor){ const used = new Set(S.sections.map(s => s.color)); ui.newSecColor = SEC_COLORS.find(c => !used.has(c)) || SEC_COLORS[0]; }
+  if (!ui.newSecIcon){ const used = S.sections.map(s => s.icon); ui.newSecIcon = SEC_ICON_IDS.find(c => !used.includes(c)) || SEC_ICON_IDS[0]; }
   const secRows = S.sections.map(s => {
     const n = pendAll.filter(x => x.section === s.id).length, conf = ui.confirmSec === s.id;
-    return `<li class="sec-item"><button class="sec-row${ui.filter === s.id ? ' on' : ''}" data-act="filter" data-sec="${s.id}" style="--c:${s.color}"><i></i><span>${esc(s.name)}</span><em>${n}</em></button>`
+    return `<li class="sec-item"><button class="sec-row${ui.filter === s.id ? ' on' : ''}" data-act="filter" data-sec="${s.id}"><span class="si">${secIcon(s, 17)}</span><span>${esc(s.name)}</span><em>${n}</em></button>`
       + `<button class="sec-del${conf ? ' confirm' : ''}" data-act="sec-del" data-sec="${s.id}" aria-label="${esc(t('del'))} ${esc(s.name)}">${conf ? esc(t('del')) : sv('<path d="M6 6l12 12M18 6L6 18"/>', 16, 2.2)}</button></li>`;
   }).join('');
   const themes = Object.keys(THEMES).map(id => `<button class="theme-card${S.theme === id ? ' on' : ''}" data-act="theme" data-theme="${id}" aria-pressed="${S.theme === id}"><span class="tc-bands">${bandsOf(id).map(b => `<span style="background:${b.bg}"></span>`).join('')}</span><span class="tc-name">${esc(t('th_' + id))}</span></button>`).join('');
@@ -938,12 +1218,14 @@ function renderDrawer(){
     + `<nav class="dr-nav"><button data-act="open-up">${ICON.upBig}<span>${esc(t('upcoming'))}</span><em>${pendAll.length}</em></button>`
     + `<button data-act="open-done">${ICON.done}<span>${esc(t('completed'))}</span><em>${doneN}</em></button>`
     + `<button data-act="open-stats">${ICON.chart}<span>${esc(t('stats'))}</span></button>`
-    + `<button data-act="open-cal">${ICON.calBig}<span>${esc(t('calendar'))}</span></button></nav>`
+    + `<button data-act="open-cal">${ICON.calBig}<span>${esc(t('calendar'))}</span></button>`
+    + `<button data-act="open-goals">${ICON.targetBig}<span>${esc(t('bigGoals'))}</span><em>${S.goals.filter(g => !g.achieved).length || ''}</em></button>`
+    + `<button data-act="open-tpl">${ICON.stackBig}<span>${esc(t('templates'))}</span><em>${(S.templates || []).length || ''}</em></button></nav>`
     + `<h3 class="dr-h">${esc(t('sections'))}</h3><ul class="sec-list">`
-    + `<li class="sec-item"><button class="sec-row${!ui.filter ? ' on' : ''}" data-act="filter" data-sec=""><i style="background:none;box-shadow:inset 0 0 0 2px var(--muted)"></i><span>${esc(t('allSections'))}</span><em>${pendAll.length}</em></button></li>`
+    + `<li class="sec-item"><button class="sec-row${!ui.filter ? ' on' : ''}" data-act="filter" data-sec=""><span class="si">${ICON.all}</span><span>${esc(t('allSections'))}</span><em>${pendAll.length}</em></button></li>`
     + secRows + `</ul>`
     + `<form class="sec-add" data-form="sec-add"><div class="sec-add-row"><input id="secName" type="text" maxlength="40" autocomplete="off" placeholder="${esc(t('sectionPh'))}" aria-label="${esc(t('newSection'))}" value="${esc(ui.newSecName)}"><button type="submit" class="btn primary" style="flex:none;padding:10px 14px;font-size:15px">${esc(t('add'))}</button></div>`
-    + `<div class="swatches">${SEC_COLORS.map(c => `<button type="button" class="sw${c === ui.newSecColor ? ' on' : ''}" style="--c:${c}" data-act="sec-color" data-color="${c}" aria-label="${c}"></button>`).join('')}</div></form>`
+    + `<div class="icons">${SEC_ICON_IDS.map(id => `<button type="button" class="ic${id === ui.newSecIcon ? ' on' : ''}" data-act="sec-icon" data-icon="${id}" aria-label="${id}" aria-pressed="${id === ui.newSecIcon}">${sv(SEC_ICONS[id], 20, 1.9)}</button>`).join('')}</div></form>`
     + `<h3 class="dr-h">${esc(t('theme'))}</h3><div class="themes">${themes}</div>`
     + `<h3 class="dr-h">${esc(t('language'))}</h3><div class="seg wide dr-seg">${['ru','en','es','fr'].map(l => `<button class="${lang === l ? 'on' : ''}" data-act="lang" data-lang="${l}">${l.toUpperCase()}</button>`).join('')}</div>`
     + `<h3 class="dr-h">${esc(t('settings'))}</h3><div class="set-list">${notifRow()}`
@@ -959,15 +1241,17 @@ function renderDrawer(){
 function openLayer(id){ const w = $(id); w.classList.add('open'); w.inert = false; if (id === '#drawerWrap') document.body.classList.add('drawer-open'); }
 function closeLayer(id){ const w = $(id); w.classList.remove('open'); w.inert = true; if (id === '#drawerWrap'){ document.body.classList.remove('drawer-open'); ui.confirmSec = null; } }
 function openDrawer(){ renderDrawer(); openLayer('#drawerWrap'); }
-const SCREENS = {cal:'#scrCal', done:'#scrDone', stats:'#scrStats', up:'#scrUp'};
+const SCREENS = {cal:'#scrCal', done:'#scrDone', stats:'#scrStats', up:'#scrUp', goals:'#scrGoals', tpl:'#scrTpl'};
 function openScreen(name){
   closeLayer('#drawerWrap');
   if (ui.screen && ui.screen !== name){ const p = $(SCREENS[ui.screen]); p.classList.remove('open'); p.inert = true; }
   ui.screen = name;
   if (name === 'cal'){ const d = parseKey(ui.calSel); ui.calMonth = new Date(d.getFullYear(), d.getMonth(), 1); renderCal(); }
   if (name === 'done') renderDone();
-  if (name === 'stats') renderStats();
+  if (name === 'stats') renderReview();
   if (name === 'up') renderUp();
+  if (name === 'goals') renderGoals();
+  if (name === 'tpl') renderTpl();
   const el = $(SCREENS[name]); el.inert = false;
   requestAnimationFrame(() => el.classList.add('open'));
   document.body.classList.add('screen-open');
@@ -981,15 +1265,16 @@ const scrHead = (title, right) => `<header class="scr-head"><button class="icon-
 
 /* ---------- calendar ---------- */
 const calOk = x => !ui.calFilter || x.section === ui.calFilter;
-const planOn = k => allTasks().filter(x => !x.done && x.date && eff(x) === k && calOk(x)).sort(byTimeOrder);
+const planOn = k => allTasks().filter(x => !x.done && x.date && eff(x) === k && calOk(x)).sort(byPri);
 const doneOn = k => allTasks().filter(x => x.done && x.doneAt && keyOf(new Date(x.doneAt)) === k && calOk(x)).sort((a, b) => a.doneAt - b.doneAt);
 function calCell(d, monthIdx){
   const k = keyOf(d), pend = planOn(k), done = doneOn(k);
-  const col = x => { const s = secOf(x.section); return s ? ` style="--c:${s.color}"` : ''; };
   const np = Math.min(3, pend.length), nd = Math.min(4 - np, done.length);
-  const dots = pend.slice(0, np).map(x => `<i${col(x)}></i>`).join('') + done.slice(0, nd).map(x => `<i class="h"${col(x)}></i>`).join('');
+  const dots = pend.slice(0, np).map(x => x.star ? '<i class="st"></i>' : '<i></i>').join('') + done.slice(0, nd).map(() => '<i class="h"></i>').join('');
   const cls = ['cc']; if (d.getMonth() !== monthIdx) cls.push('out'); if (k === TK) cls.push('today'); if (k === ui.calSel) cls.push('sel'); if (k < TK) cls.push('past');
-  return `<button class="${cls.join(' ')}" data-act="cal-sel" data-k="${k}" aria-label="${esc(fullDate(k))}"><span class="cc-n">${d.getDate()}</span><span class="cc-dots">${dots}</span></button>`;
+  if (pend.some(x => x.star)) cls.push('starred');
+  const dl = allTasks().some(x => !x.done && x.deadline === k && calOk(x));
+  return `<button class="${cls.join(' ')}" data-act="cal-sel" data-k="${k}" aria-label="${esc(fullDate(k))}">${dl ? `<span class="cc-dl">${ICON.flag}</span>` : ''}<span class="cc-n">${d.getDate()}</span><span class="cc-dots">${dots}</span></button>`;
 }
 function renderCal(){
   const m = ui.calMonth, first = startOfWeek(m), monthIdx = m.getMonth();
@@ -1027,7 +1312,7 @@ function renderCal(){
     }
   }
   const seg = `<div class="seg wide"><button class="${ui.calMode === 'week' ? 'on' : ''}" data-act="cal-mode" data-mode="week">${esc(t('weekW'))}</button><button class="${ui.calMode === 'month' ? 'on' : ''}" data-act="cal-mode" data-mode="month">${esc(t('monthW'))}</button></div>`;
-  const chips = S.sections.length ? `<div class="chips cal-chips"><button class="chip${!ui.calFilter ? ' sel' : ''}" data-act="cal-filter" data-sec="">${esc(t('allSections'))}</button>${S.sections.map(s => `<button class="chip sec${ui.calFilter === s.id ? ' sel' : ''}" style="--c:${s.color}" data-act="cal-filter" data-sec="${s.id}"><i></i>${esc(s.name)}</button>`).join('')}</div>` : '';
+  const chips = S.sections.length ? `<div class="chips cal-chips"><button class="chip${!ui.calFilter ? ' sel' : ''}" data-act="cal-filter" data-sec="">${esc(t('allSections'))}</button>${S.sections.map(s => `<button class="chip${ui.calFilter === s.id ? ' sel' : ''}" data-act="cal-filter" data-sec="${s.id}">${secIcon(s, 15)}${esc(s.name)}</button>`).join('')}</div>` : '';
   $('#scrCal').innerHTML = scrHead(t('calendar')) + `<div class="scr-body">${seg}${chips}${body}</div>`;
 }
 
@@ -1035,16 +1320,21 @@ function renderCal(){
 function renderUp(){
   const f = ui.upFilter, list = allTasks().filter(x => !x.done && (!f || x.section === f));
   const groups = new Map(), undated = list.filter(x => !x.date).sort(byOrder);
-  list.filter(x => x.date).sort((a, b) => { const ea = eff(a), eb = eff(b); return ea < eb ? -1 : ea > eb ? 1 : byTimeOrder(a, b); })
+  list.filter(x => x.date).sort((a, b) => { const ea = eff(a), eb = eff(b); return ea < eb ? -1 : ea > eb ? 1 : byPri(a, b); })
     .forEach(x => { const k = eff(x); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(x); });
   const tmr = keyOf(addDays(parseKey(TK), 1));
   const label = k => k === TK ? t('today') + ', ' + dateLong(parseKey(k)) : k === tmr ? t('tomorrow') + ', ' + dateLong(parseKey(k)) : fullDate(k);
   const group = (title, items) => `<div class="dg"><div class="dg-head"><span class="dg-title">${esc(title)}</span><span class="dg-n">${items.length}</span></div><ul class="tasks">${items.map(x => taskRow(x, {noGrip:true})).join('')}</ul></div>`;
-  let html = '';
-  if (S.sections.length) html += `<div class="done-tools"><div class="chips"><button class="chip${!f ? ' sel' : ''}" data-act="up-filter" data-sec="">${esc(t('allSections'))}</button>${S.sections.map(s => `<button class="chip sec${f === s.id ? ' sel' : ''}" style="--c:${s.color}" data-act="up-filter" data-sec="${s.id}"><i></i>${esc(s.name)}</button>`).join('')}</div></div>`;
+  const seg = `<div class="seg wide"><button class="${ui.upMode === 'list' ? 'on' : ''}" data-act="up-mode" data-mode="list">${esc(t('listW'))}</button><button class="${ui.upMode === 'matrix' ? 'on' : ''}" data-act="up-mode" data-mode="matrix">${ICON.matrix}${esc(t('matrix'))}</button></div>`;
+  let html = `<div class="done-tools">${seg}`;
+  if (S.sections.length) html += `<div class="chips"><button class="chip${!f ? ' sel' : ''}" data-act="up-filter" data-sec="">${esc(t('allSections'))}</button>${S.sections.map(s => `<button class="chip${f === s.id ? ' sel' : ''}" data-act="up-filter" data-sec="${s.id}">${secIcon(s, 15)}${esc(s.name)}</button>`).join('')}</div>`;
+  html += '</div>';
   if (!list.length) html += `<div class="empty-big">${sv('<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke-width="3.4"/>', 44, 1.6)}${esc(t('upEmpty'))}</div>`;
-  for (const [k, items] of groups) html += group(label(k), items);
-  if (undated.length) html += group(t('noDate'), undated);
+  else if (ui.upMode === 'matrix') html += matrixHTML(list);
+  else {
+    for (const [k, items] of groups) html += group(label(k), items);
+    if (undated.length) html += group(t('noDate'), undated);
+  }
   $('#scrUp').innerHTML = scrHead(t('upcoming'), `<span class="dg-n" style="padding-right:6px">${list.length}</span>`) + `<div class="scr-body">${html}</div>`;
 }
 
@@ -1065,7 +1355,7 @@ function renderDone(){
     const [y, m] = k.split('-').map(Number); return cap(fmt(new Date(y, m - 1, 1), {month:'long', year:'numeric'})).replace(/\s?г\.$/, '');
   };
   let html = `<div class="done-tools"><div class="seg wide">${[['day','byDays'],['week','byWeeks'],['month','byMonths']].map(([g, k]) => `<button class="${ui.doneGroup === g ? 'on' : ''}" data-act="done-group" data-g="${g}">${esc(t(k))}</button>`).join('')}</div>`;
-  if (S.sections.length) html += `<div class="chips"><button class="chip${!ui.doneFilter ? ' sel' : ''}" data-act="done-filter" data-sec="">${esc(t('allSections'))}</button>${S.sections.map(s => `<button class="chip sec${ui.doneFilter === s.id ? ' sel' : ''}" style="--c:${s.color}" data-act="done-filter" data-sec="${s.id}"><i></i>${esc(s.name)}</button>`).join('')}</div>`;
+  if (S.sections.length) html += `<div class="chips"><button class="chip${!ui.doneFilter ? ' sel' : ''}" data-act="done-filter" data-sec="">${esc(t('allSections'))}</button>${S.sections.map(s => `<button class="chip${ui.doneFilter === s.id ? ' sel' : ''}" data-act="done-filter" data-sec="${s.id}">${secIcon(s, 15)}${esc(s.name)}</button>`).join('')}</div>`;
   html += '</div>';
   if (!list.length) html += `<div class="empty-big">${sv('<rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M8 12.5l3 3 5-6"/>', 44, 1.6)}${esc(t('emptyDone'))}</div>`;
   for (const [k, items] of groups){
@@ -1142,15 +1432,14 @@ function barChart(items, hiIdx, aria){
   });
   return s + '</svg>';
 }
-function renderStats(){
-  const st = computeStats();
+// All-time numbers; shown under the weekly review.
+function statsBody(st){
   const trend = st.w1 ? Math.round((st.w0 - st.w1) / st.w1 * 100) : (st.w0 ? 100 : 0);
   const C = 2 * Math.PI * 16;
   let h = `<div class="tiles">`
     + `<div class="tile"><b>${st.w0}</b><span>${esc(t('sWeekDone'))}</span>${trend ? `<em class="${trend > 0 ? 'up' : 'down'}">${trend > 0 ? '↑' : '↓'} ${Math.abs(trend)}%</em>` : ''}</div>`
     + `<div class="tile"><div class="tile-ring"><svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="bgc" cx="20" cy="20" r="16"/><circle class="fgc" cx="20" cy="20" r="16" stroke-dasharray="${C * st.rate / 100} ${C}" transform="rotate(-90 20 20)"/></svg><b>${st.rate}%</b></div><span>${esc(t('sWeekRate'))}</span><em>${st.doneWeek}/${st.doneWeek + st.pendWeek}</em></div>`
     + `<div class="tile"><b>${st.streak}</b><span>${esc(t('sStreak'))}</span><em>${esc(t('sBest', {n: st.best}))}</em></div></div>`;
-  h += `<section class="card"><h3>${esc(t('sInsights'))}</h3><ul class="ins">${insights(st).map(s => `<li>${esc(s)}</li>`).join('')}</ul></section>`;
   const l14 = st.last14.map(d => { const dd = parseKey(d.k); return {n: d.n, label: String(dd.getDate()), tip: `${shortDate(d.k)} · ${d.n}`}; });
   h += `<section class="card"><h3>${esc(t('sLast14'))}</h3>${barChart(l14, [13], t('sLast14'))}</section>`;
   const ws = startOfWeek(parseKey(TK)), wdMax = Math.max(...st.wd);
@@ -1160,11 +1449,10 @@ function renderStats(){
     + `<div class="parts">${['morning','afternoon','evening','night'].map((k, i) => `<div class="part${pMax && st.parts[i] === pMax ? ' top' : ''}"><b>${st.parts[i]}</b>${esc(t(k))}</div>`).join('')}</div></section>`;
   const secRows = Object.entries(st.secCount).sort((a, b) => b[1] - a[1]);
   const sMax = Math.max(1, ...secRows.map(r => r[1]));
-  h += `<section class="card"><h3>${esc(t('sSections'))}</h3>` + (secRows.length ? `<div class="hbars">${secRows.map(([id, n]) => { const s = secOf(id); const c = s ? s.color : 'var(--muted)'; return `<div class="hb" style="--c:${c}"><span class="hb-name"><i></i><span>${esc(s ? s.name : t('noSec'))}</span></span><span class="hb-n">${n}</span><span class="hb-track"><i style="width:${n / sMax * 100}%"></i></span></div>`; }).join('')}</div>` : `<p class="empty">${esc(t('insStart'))}</p>`) + `</section>`;
-  h += `<section class="card"><h3>${esc(t('sStuck'))}</h3>` + (st.stuck.length ? st.stuck.slice(0, 6).map(s => `<button class="stuck-row" data-act="stuck-open" data-id="${s.x.id}"><span>${esc(s.x.title)}</span><em>${esc(t('carried', {n: s.n}))}</em></button>`).join('') : `<p class="empty">${esc(t('sStuckNone'))}</p>`) + `</section>`;
+  h += `<section class="card"><h3>${esc(t('sSections'))}</h3>` + (secRows.length ? `<div class="hbars">${secRows.map(([id, n]) => { const s = secOf(id); const c = s ? 'var(--accent)' : 'var(--muted)'; return `<div class="hb" style="--c:${c}"><span class="hb-name">${s ? secIcon(s, 14) : '<i></i>'}<span>${esc(s ? s.name : t('noSec'))}</span></span><span class="hb-n">${n}</span><span class="hb-track"><i style="width:${n / sMax * 100}%"></i></span></div>`; }).join('')}</div>` : `<p class="empty">${esc(t('insStart'))}</p>`) + `</section>`;
   const lead = st.lead === null ? '—' : st.lead < 24 ? t('hoursShort', {n: Math.max(1, Math.round(st.lead))}) : t('daysShort', {n: Math.round(st.lead / 24 * 10) / 10});
   h += `<section class="card"><h3>${esc(t('sMore'))}</h3><div class="kv"><b>${st.onTime === null ? '—' : st.onTime + '%'}</b><span>${esc(t('sOnTime'))}</span><b>${esc(lead)}</b><span>${esc(t('sLead'))}</span><b>${st.done.length}</b><span>${esc(t('sTotal'))}</span><b>${st.open}</b><span>${esc(t('sOpen'))}</span></div></section>`;
-  $('#scrStats').innerHTML = scrHead(t('stats')) + `<div class="scr-body">${h}</div>`;
+  return h;
 }
 
 /* ================= sheet ================= */
@@ -1175,7 +1463,7 @@ const REPEAT_OPTS = [[null, 'noRepeat'], ['daily', 'rDaily'], ['weekdays', 'rWee
 function shEff(){
   const v = Object.assign({}, SH.base), p = SH.parsed;
   if (p){
-    for (const f of ['date', 'time', 'section', 'repeat']) if (!SH.manual[f] && p[f] !== undefined) v[f] = p[f];
+    for (const f of ['date', 'time', 'section', 'repeat', 'star', 'deadline', 'goal']) if (!SH.manual[f] && p[f] !== undefined) v[f] = p[f];
     if (p.time && !SH.manual.remind && SH.base.remind == null) v.remind = 0;
   }
   if (SH.lockDate) v.date = SH.base.date;
@@ -1188,16 +1476,25 @@ function openTaskSheet(o){
   if (o.id && !x) return;
   const date = x ? (x.done ? x.date : eff(x)) : (o.date !== undefined ? o.date : TK);
   SH = {id: x ? x.id : null, lockDate: !!o.lockDate, origEff: date, confirmDel: false, manual: {}, parsed: null,
-    base: {date, time: x ? x.time : null, remind: x ? x.remind : null, repeat: x ? x.repeat : null, section: x ? x.section : (ui.filter || null)}};
-  if (ui.mc && ui.mc.scope === 'sheet') ui.mc = null;
+    base: {date, time: x ? x.time : null, remind: x ? x.remind : null, repeat: x ? x.repeat : null, section: x ? x.section : (ui.filter || null),
+      star: x ? !!x.star : false, deadline: x ? x.deadline || null : null, goal: x ? x.goal || null : (o.goal || null)},
+    steps: x ? (x.steps || []).map(p => Object.assign({}, p)) : []};
+  SH.moreOpen = !!(SH.base.deadline || SH.base.repeat || SH.base.goal);
+  ui.sheet = 'task';
+  if (ui.mc && (ui.mc.scope === 'sheet' || ui.mc.scope === 'deadline')) ui.mc = null;
   renderSheet(x ? x.title : '');
   openLayer('#sheetWrap');
+  if (o.focusSteps) requestAnimationFrame(() => { const el = $('#stepAdd'); if (el) el.scrollIntoView({block: 'center', behavior: reduced ? 'auto' : 'smooth'}); });
 }
-function closeSheet(){ closeLayer('#sheetWrap'); const a = document.activeElement; if (a && a.blur) a.blur(); SH = null; if (ui.mc && ui.mc.scope === 'sheet') ui.mc = null; }
+function closeSheet(){
+  closeLayer('#sheetWrap'); const a = document.activeElement; if (a && a.blur) a.blur();
+  SH = GS = HS = TS = null; ui.sheet = null; stopVoice();
+  if (ui.mc && (ui.mc.scope === 'sheet' || ui.mc.scope === 'deadline')) ui.mc = null;
+}
 const chipB = (act, val, label, sel) => `<button type="button" class="chip${sel ? ' sel' : ''}" data-act="${act}" data-v="${val == null ? '' : val}">${label}</button>`;
 function secChips(v){
   return chipB('sheet-sec', '', esc(t('noSection')), !v.section)
-    + S.sections.map(s => `<button type="button" class="chip sec${v.section === s.id ? ' sel' : ''}" style="--c:${s.color}" data-act="sheet-sec" data-v="${s.id}"><i></i>${esc(s.name)}</button>`).join('');
+    + S.sections.map(s => `<button type="button" class="chip${v.section === s.id ? ' sel' : ''}" data-act="sheet-sec" data-v="${s.id}">${secIcon(s, 15)}${esc(s.name)}</button>`).join('');
 }
 function dateChipsHTML(v){
   const items = [{k: null, label: t('noDate')}].concat(dateChoices());
@@ -1213,9 +1510,24 @@ function timeChips(v){
 }
 const remindChips = v => REMINDS.map(([m, k]) => chipB('sheet-remind', m, esc(t(k)), v.remind === m)).join('');
 const repeatChips = v => REPEAT_OPTS.map(([r, k]) => chipB('sheet-rep', r, esc(t(k)), v.repeat === r)).join('');
+function dlChipsHTML(v){
+  const items = [{k: null, label: t('noDeadline')}].concat(dateChoices());
+  const inList = items.some(c => c.k === v.deadline);
+  return items.map(c => chipB('sheet-dl', c.k, esc(c.label), c.k === v.deadline)).join('')
+    + `<button type="button" class="chip${inList ? '' : ' sel'}" data-act="mc-open" data-scope="deadline" aria-expanded="${!!(ui.mc && ui.mc.scope === 'deadline')}">${ICON.cal}<span>${esc(inList ? t('otherDate') : shortDate(v.deadline))}</span></button>`;
+}
+function goalChips(v){
+  return chipB('sheet-goal', '', esc(t('noBigGoal')), !v.goal)
+    + S.goals.filter(g => !g.achieved || g.id === v.goal).map(g => `<button type="button" class="chip${v.goal === g.id ? ' sel' : ''}" data-act="sheet-goal" data-v="${g.id}">${ICON.target}${esc(g.title)}</button>`).join('');
+}
+function stepsHTML(steps){
+  return steps.map((p, i) => `<li class="step${p.done ? ' done' : ''}"><button type="button" class="check" data-act="step-tick" data-i="${i}" aria-pressed="${p.done}">${ICON.tick}</button>`
+    + `<span>${esc(p.t)}</span><button type="button" class="step-del" data-act="step-del" data-i="${i}" aria-label="${esc(t('del'))}">${sv('<path d="M6 6l12 12M18 6L6 18"/>', 14, 2.4)}</button></li>`).join('');
+}
 function sheetGroups(){
   if (!SH) return;
   const v = shEff();
+  const star = $('#shStar'); star.classList.toggle('on', !!v.star); star.setAttribute('aria-pressed', !!v.star);
   $('#shSecs').innerHTML = secChips(v);
   const dates = $('#shDates'); if (dates) dates.innerHTML = dateChipsHTML(v);
   const cal = $('#shCal'); if (cal) cal.innerHTML = ui.mc && ui.mc.scope === 'sheet' ? miniCal(ui.mc.month, v.date) : '';
@@ -1224,6 +1536,15 @@ function sheetGroups(){
   $('#shRemindWrap').hidden = !v.time;
   $('#shRemind').innerHTML = remindChips(v);
   $('#shRepeat').innerHTML = repeatChips(v);
+  $('#shSteps').innerHTML = stepsHTML(SH.steps);
+  $('#shStepsN').textContent = SH.steps.length ? `${SH.steps.filter(p => p.done).length}/${SH.steps.length}` : '';
+  const more = $('#shMore'); more.setAttribute('aria-expanded', !!SH.moreOpen); $('#shMoreBody').hidden = !SH.moreOpen;
+  const filled = [v.deadline && t('dueBy', {d: shortDate(v.deadline)}), v.repeat && t(REPEAT_KEYS[v.repeat]), goalOf(v.goal) && goalOf(v.goal).title].filter(Boolean);
+  more.querySelector('small').textContent = filled.length ? filled.join(' · ') : t('moreHint');
+  $('#shDl').innerHTML = dlChipsHTML(v);
+  $('#shDlCal').innerHTML = ui.mc && ui.mc.scope === 'deadline' ? miniCal(ui.mc.month, v.deadline) : '';
+  $('#shGoalWrap').hidden = !S.goals.some(g => !g.achieved || g.id === v.goal);
+  $('#shGoal').innerHTML = goalChips(v);
   const sm = $('#shSmart'), p = SH.parsed;
   if (p && p.hits.length){ sm.hidden = false; sm.innerHTML = `<span class="sm-l">${ICON.spark}${esc(t('recognized'))}</span>` + p.hits.map(h => `<span class="sm-chip">${esc(h)}</span>`).join(''); }
   else { sm.hidden = true; sm.innerHTML = ''; }
@@ -1232,13 +1553,19 @@ function renderSheet(title){
   const head = SH.lockDate && SH.base.date ? fullDate(SH.base.date) : t(SH.id ? 'goal' : 'newGoal');
   $('#sheet').innerHTML = `<div class="grab" aria-hidden="true"></div>`
     + `<div class="sh-head"><h2 class="sh-title">${esc(head)}</h2><button class="icon-btn sm" data-act="close-sheet" aria-label="${esc(t('close'))}">${ICON.close}</button></div>`
-    + `<form data-form="sheet" autocomplete="off"><input id="shTitle" class="big-input" type="text" maxlength="200" enterkeyhint="done" placeholder="${esc(t(SH.id ? 'titlePh' : 'titleEx'))}" aria-label="${esc(t('titlePh'))}" value="${esc(title)}">`
+    + `<form data-form="sheet" autocomplete="off"><div class="title-row"><input id="shTitle" class="big-input" type="text" maxlength="200" enterkeyhint="done" placeholder="${esc(t(SH.id ? 'titlePh' : 'titleEx'))}" aria-label="${esc(t('titlePh'))}" value="${esc(title)}">`
+    + micBtn('shTitle') + `<button type="button" class="star-tg" id="shStar" data-act="sheet-star" aria-label="${esc(t('markStar'))}" title="${esc(t('markStar'))}">${ICON.starBtn}</button></div>`
     + `<div class="smart" id="shSmart" hidden></div>`
     + (SH.lockDate ? '' : `<div class="fl">${esc(t('date'))}</div><div class="chips" id="shDates"></div><div id="shCal"></div>`)
     + `<div class="fl">${esc(t('time'))}</div><div class="chips" id="shTimes"></div><div id="shTp"></div>`
     + `<div id="shRemindWrap"><div class="fl">${esc(t('remind'))}</div><div class="chips" id="shRemind"></div><p class="fl-note">${esc(t('remindNote'))}</p></div>`
     + `<div class="fl">${esc(t('section'))}</div><div class="chips" id="shSecs"></div>`
+    + `<div class="fl">${esc(t('steps'))} <span id="shStepsN"></span></div><ul class="steps" id="shSteps"></ul>`
+    + `<div class="step-add" id="stepAdd"><span class="plus">${ICON.plus}</span><input id="stepIn" type="text" maxlength="200" autocomplete="off" enterkeyhint="enter" placeholder="${esc(t('stepPh'))}" aria-label="${esc(t('stepPh'))}"></div>`
+    + `<button type="button" class="more-tg" id="shMore" data-act="sheet-more"><span>${esc(t('more'))} <small></small></span>${ICON.chev}</button>`
+    + `<div id="shMoreBody" hidden><div class="fl">${esc(t('deadline'))}</div><div class="chips" id="shDl"></div><div id="shDlCal"></div>`
     + `<div class="fl">${esc(t('repeat'))}</div><div class="chips" id="shRepeat"></div>`
+    + `<div id="shGoalWrap"><div class="fl">${esc(t('bigGoal'))}</div><div class="chips" id="shGoal"></div></div></div>`
     + (SH.id ? `<button type="button" class="btn ghost block cal-btn" data-act="sheet-ics">${ICON.calBig}<span>${esc(t('toCalendar'))}</span></button>` : '')
     + `<div class="sh-actions">${SH.id ? `<button type="button" class="btn ghost danger" id="shDel" data-act="sheet-del">${ICON.trash}<span>${esc(t('del'))}</span></button>` : ''}<button type="submit" class="btn primary">${esc(t('save'))}</button></div></form>`;
   sheetGroups();
@@ -1252,12 +1579,12 @@ function saveSheet(){
   const s = SH, v = shEff();
   if (s.id){
     const x = S.tasks[s.id]; if (!x) return closeSheet();
-    const nx = Object.assign({}, x, {title, section: v.section, time: v.time, remind: v.remind, repeat: v.repeat});
+    const nx = Object.assign({}, x, {title, section: v.section, time: v.time, remind: v.remind, repeat: v.repeat, star: !!v.star, deadline: v.deadline || null, goal: v.goal || null, steps: s.steps});
     if (!s.lockDate && v.date !== s.origEff){ nx.date = v.date; nx.origDate = v.date; nx.order = Date.now(); }
     if (nx.time !== x.time || nx.remind !== x.remind || nx.date !== x.date) nx.remindFrom = Date.now();
     closeSheet(); putTask(nx);
   } else {
-    const nx = newTask(title, v.date, v.section, {time: v.time, remind: v.remind, repeat: v.repeat});
+    const nx = newTask(title, v.date, v.section, {time: v.time, remind: v.remind, repeat: v.repeat, star: !!v.star, deadline: v.deadline || null, goal: v.goal || null, steps: s.steps});
     closeSheet();
     const inWeek = nx.date && nx.date >= keyOf(ui.weekStart) && nx.date <= keyOf(addDays(ui.weekStart, 6));
     if (nx.date && inWeek) ui.open.add(nx.date);
@@ -1267,6 +1594,515 @@ function saveSheet(){
     else if (nx.date) toast(t('added', {d: shortDate(nx.date)}), t('show'), () => jumpTo(nx.date));
     else toast(t('toInbox'));
   }
+}
+
+/* ================= shared sheet bits ================= */
+let GS = null, HS = null, TS = null;
+const sheetHead = title => `<div class="grab" aria-hidden="true"></div><div class="sh-head"><h2 class="sh-title">${esc(title)}</h2><button class="icon-btn sm" data-act="close-sheet" aria-label="${esc(t('close'))}">${ICON.close}</button></div>`;
+// A short list of actions in the bottom sheet (stuck goals, templates).
+function openMenuSheet(title, sub, items){
+  SH = GS = HS = TS = null; ui.sheet = 'menu';
+  $('#sheet').innerHTML = sheetHead(title) + (sub ? `<p class="ms-sub">${esc(sub)}</p>` : '')
+    + `<div class="ms-list">${items.map(o => `<button class="ms-item${o.danger ? ' danger' : ''}" data-act="${o.act}"${Object.entries(o.data || {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join('')}>`
+      + `${o.icon || ''}<span>${esc(o.label)}${o.sub ? `<small>${esc(o.sub)}</small>` : ''}</span></button>`).join('')}</div>`;
+  openLayer('#sheetWrap');
+}
+
+/* ================= priority, deadlines, steps ================= */
+const goalOf = id => id ? S.goals.find(g => g.id === id) || null : null;
+const fmtNum = n => new Intl.NumberFormat(LOCALES[lang], {maximumFractionDigits: 1}).format(n);
+function dueShort(k){
+  const n = diffDays(TK, k);
+  if (n === 0) return t('today').toLocaleLowerCase(LOCALES[lang]);
+  if (n === 1) return t('tomorrow').toLocaleLowerCase(LOCALES[lang]);
+  if (n > 1 && n < 7) return fmt(parseKey(k), {weekday: 'short'}).replace('.', '');
+  return fmt(parseKey(k), {day: 'numeric', month: 'short'});
+}
+function dlChip(k){
+  const n = diffDays(TK, k), cls = n < 0 ? 'over' : n === 0 ? 'now' : n <= 2 ? 'soon' : '';
+  return `<span class="t-dl ${cls}">${ICON.flag}${esc(n < 0 ? t('dueOver') : n === 0 ? t('dueToday') : t('dueBy', {d: dueShort(k)}))}</span>`;
+}
+function stepRing(steps){
+  const C = 2 * Math.PI * 6, p = steps.length ? steps.filter(s => s.done).length / steps.length : 0;
+  return `<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-opacity=".3" stroke-width="2.4"/>`
+    + `<circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="${C * p} ${C}" transform="rotate(-90 8 8)"/></svg>`;
+}
+// Deadlines in the next two days that sit on other days (or in Tasks) surface at the top of today.
+function dueStrip(){
+  const lim = keyOf(addDays(parseKey(TK), 2));
+  const list = allTasks().filter(x => !x.done && x.deadline && x.deadline <= lim && eff(x) !== TK && filterOk(x)).sort((a, b) => a.deadline < b.deadline ? -1 : 1);
+  if (!list.length) return '';
+  return `<div class="dl-strip"><b>${ICON.flag}${esc(t('dueSoon'))}</b>${list.slice(0, 3).map(x => `<button data-act="open-task" data-id="${x.id}">${esc(x.title)} · ${esc(x.deadline < TK ? t('dueOver') : dueShort(x.deadline))}</button>`).join('')}${list.length > 3 ? `<span>+${list.length - 3}</span>` : ''}</div>`;
+}
+function addStep(){
+  const inp = $('#stepIn'); if (!inp || !SH) return;
+  const v = inp.value.trim(); if (!v){ shake(inp); return; }
+  SH.steps.push({id: uid('p'), t: v.slice(0, 200), done: false}); inp.value = ''; sheetGroups();
+}
+function tickStep(i){
+  const p = SH.steps[i]; if (!p) return;
+  p.done = !p.done; haptic(8);
+  // the last step closes the goal itself
+  if (p.done && SH.id && SH.steps.every(s => s.done)){
+    const x = S.tasks[SH.id];
+    if (x && !x.done){ const id = SH.id; saveSheet(); setTimeout(() => completeById(id, t('stepsDone')), 140); return; }
+  }
+  sheetGroups();
+}
+function completeById(id, msg){
+  const scope = ui.screen ? $(SCREENS[ui.screen]) : document;
+  const btn = [...scope.querySelectorAll(`.task[data-id="${id}"] > .check`)].find(b => {
+    const band = b.closest('.band'), note = b.closest('.note');
+    return b.offsetParent && (!band || band.classList.contains('open')) && (!note || note.classList.contains('open'));
+  });
+  if (btn){ completeTask(id, btn, msg); return; }
+  const x = S.tasks[id]; if (!x || x.done) return;
+  sparks(innerWidth / 2, innerHeight / 2, TH().accent); finishTask(id, Object.assign({}, x), msg);
+}
+
+/* ================= stuck goals, spreading Tasks over the week ================= */
+const nextSat = () => { let d = addDays(parseKey(TK), 1); while (d.getDay() !== 6) d = addDays(d, 1); return keyOf(d); };
+const nextMon = () => keyOf(addDays(startOfWeek(parseKey(TK)), 7));
+function stuckMenu(id){
+  const x = S.tasks[id]; if (!x) return;
+  const n = x.date && x.date < TK ? diffDays(x.date, TK) : 0, data = how => ({id, how});
+  openMenuSheet(t('stuckTitle', {n}), t('stuckHint'), [
+    {act: 'stuck-do', data: data('split'), icon: ICON.done, label: t('stuckSplit'), sub: t('stuckSplitD')},
+    {act: 'stuck-do', data: data('weekend'), icon: ICON.calBig, label: t('stuckWeekend'), sub: shortDate(nextSat())},
+    {act: 'stuck-do', data: data('next'), icon: ICON.calBig, label: t('stuckNextWeek'), sub: shortDate(nextMon())},
+    {act: 'stuck-do', data: data('inbox'), icon: ICON.upBig, label: t('stuckInbox'), sub: t('stuckInboxD')},
+    {act: 'stuck-do', data: data('del'), icon: ICON.trash, label: t('del'), danger: true}
+  ]);
+}
+function stuckDo(id, how){
+  const x = S.tasks[id]; if (!x) return;
+  if (how === 'split'){ openTaskSheet({id, focusSteps: true}); return; }
+  closeSheet();
+  if (how === 'del'){ deleteWithUndo(id); return; }
+  const before = Object.assign({}, x), k = how === 'weekend' ? nextSat() : how === 'next' ? nextMon() : null;
+  putTask(Object.assign({}, x, {date: k, origDate: k, order: Date.now()}));
+  toast(k ? t('movedTo', {d: shortDate(k)}) : t('toInbox'), t('undo'), () => putTask(before));
+}
+// Undated tasks go to the least busy of the next seven days; priority first, earliest deadline next, never past a deadline.
+function spreadInbox(){
+  const dl = x => x.deadline || '9999';
+  const list = inboxTasks().slice().sort((a, b) => ((b.star ? 1 : 0) - (a.star ? 1 : 0)) || (dl(a) < dl(b) ? -1 : dl(a) > dl(b) ? 1 : 0) || byOrder(a, b));
+  if (!list.length) return;
+  const days = [...Array(7)].map((_, i) => keyOf(addDays(parseKey(TK), i))), load = {};
+  days.forEach(k => { load[k] = allTasks().filter(x => !x.done && x.date && eff(x) === k).length; });
+  const before = list.map(x => Object.assign({}, x));
+  list.forEach((x, i) => {
+    const fit = days.filter(k => !x.deadline || k <= x.deadline), pool = fit.length ? fit : [days[0]];
+    const k = pool.reduce((best, d) => load[d] < load[best] ? d : best, pool[0]);
+    load[k]++;
+    S.tasks[x.id] = Object.assign({}, x, {date: k, origDate: k, order: Date.now() + i});
+  });
+  persist(); renderAll(); haptic([10, 40, 10]);
+  toast(t('distributed', {n: list.length}), t('undo'), () => { before.forEach(b => { S.tasks[b.id] = b; }); persist(); renderAll(); });
+}
+
+/* ================= habits ================= */
+const habitDone = (id, k) => (S.habitLog[k] || []).includes(id);
+const habitStats = k => ({total: S.habits.length, done: S.habits.filter(h => habitDone(h.id, k)).length});
+function habitStreak(id){ let n = 0, d = parseKey(TK); if (!habitDone(id, TK)) d = addDays(d, -1); while (habitDone(id, keyOf(d))){ n++; d = addDays(d, -1); } return n; }
+function habitBest(id){
+  let best = 0, run = 0, prev = null;
+  Object.keys(S.habitLog).filter(k => S.habitLog[k].includes(id)).sort().forEach(k => { run = prev && diffDays(prev, k) === 1 ? run + 1 : 1; best = Math.max(best, run); prev = k; });
+  return best;
+}
+// One row per habit, seven dots for the week shown below; future days stay locked.
+function habitsBody(){
+  const days = [...Array(7)].map((_, i) => addDays(ui.weekStart, i));
+  let h = '';
+  if (S.habits.length){
+    h += `<div class="hb-row hb-head"><span></span>${days.map(d => `<span${keyOf(d) === TK ? ' class="now"' : ''}>${esc(fmt(d, {weekday: 'narrow'}))}</span>`).join('')}</div><ul class="habits">`
+      + S.habits.map(hb => {
+        const st = habitStreak(hb.id);
+        return `<li class="hb-row habit"><button class="hb-name" data-act="habit-edit" data-id="${hb.id}"><span>${esc(hb.name)}</span>${st > 1 ? `<small>${ICON.flame}${esc(t('streakN', {n: st}))}</small>` : ''}</button>`
+          + days.map(d => { const k = keyOf(d), on = habitDone(hb.id, k);
+            return `<button class="hd${on ? ' on' : ''}${k === TK ? ' now' : ''}" data-act="habit-tick" data-id="${hb.id}" data-k="${k}" aria-pressed="${on}" aria-label="${esc(hb.name)} · ${esc(fullDate(k))}"${k > TK ? ' disabled' : ''}>${on ? ICON.tickS : ''}</button>`; }).join('') + `</li>`;
+      }).join('') + `</ul>`;
+  } else h += `<p class="empty">${esc(t('habitsEmpty'))}</p>`;
+  return h + `<form class="note-add" data-form="habit-add"><span class="plus">${ICON.plus}</span><input id="habitInput" type="text" maxlength="40" autocomplete="off" enterkeyhint="done" placeholder="${esc(t('habitPh'))}" aria-label="${esc(t('habitPh'))}"><button type="submit" class="note-go" aria-label="${esc(t('add'))}">${ICON.arrow}</button></form>`;
+}
+function tickHabit(id, k, btn){
+  const arr = (S.habitLog[k] || []).slice(), i = arr.indexOf(id);
+  if (i >= 0) arr.splice(i, 1);
+  else {
+    arr.push(id);
+    const r = btn.getBoundingClientRect();
+    sparks(r.left + r.width / 2, r.top + r.height / 2, TH().accent);
+  }
+  if (arr.length) S.habitLog[k] = arr; else delete S.habitLog[k];
+  haptic(8); persist(); renderInbox();
+}
+function openHabitSheet(id){
+  const hb = S.habits.find(h => h.id === id); if (!hb) return;
+  SH = GS = TS = null; HS = {id, confirmDel: false}; ui.sheet = 'habit';
+  const best = habitBest(id);
+  $('#sheet').innerHTML = sheetHead(t('habit'))
+    + `<form data-form="habit-sheet" autocomplete="off"><input id="hsName" class="big-input" type="text" maxlength="40" aria-label="${esc(t('habit'))}" value="${esc(hb.name)}">`
+    + (best > 1 ? `<p class="fl-note">${ICON.flame} ${esc(t('streakN', {n: habitStreak(id)}))} · ${esc(t('sBest', {n: best}))}</p>` : '')
+    + `<div class="sh-actions"><button type="button" class="btn ghost danger" data-act="hs-del">${ICON.trash}<span>${esc(t('del'))}</span></button><button type="submit" class="btn primary">${esc(t('save'))}</button></div></form>`;
+  openLayer('#sheetWrap');
+}
+function saveHabit(){
+  const inp = $('#hsName'), name = inp.value.trim(); if (!name){ shake(inp); return; }
+  const hb = S.habits.find(h => h.id === HS.id); if (hb) hb.name = name.slice(0, 40);
+  closeSheet(); persist(); renderInbox();
+}
+function deleteHabit(id){
+  const habits = S.habits.slice(), log = JSON.parse(JSON.stringify(S.habitLog));
+  S.habits = S.habits.filter(h => h.id !== id);
+  for (const k in S.habitLog){ S.habitLog[k] = S.habitLog[k].filter(x => x !== id); if (!S.habitLog[k].length) delete S.habitLog[k]; }
+  closeSheet(); persist(); renderInbox();
+  toast(t('deleted'), t('undo'), () => { S.habits = habits; S.habitLog = log; persist(); renderInbox(); });
+}
+
+/* ================= mood ================= */
+const MOOD_COL = ['#D9534A', '#E8893C', '#D4AC3A', '#62B067', '#2E9E6E'];
+const MOUTHS = ['M8 16.6c1.2-1.7 2.6-2.4 4-2.4s2.8.7 4 2.4', 'M8.6 16.1c1-.8 2.1-1.2 3.4-1.2s2.4.4 3.4 1.2', 'M8.6 15.4h6.8', 'M8.6 14.6c1 .8 2.1 1.2 3.4 1.2s2.4-.4 3.4-1.2', 'M8 14c1.2 1.9 2.6 2.7 4 2.7s2.8-.8 4-2.7'];
+function face(v, size, colored){
+  if (!v) return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke-dasharray="2.6 2.4"/><circle cx="9" cy="10" r=".9" fill="currentColor"/><circle cx="15" cy="10" r=".9" fill="currentColor"/><path d="M8.6 15.2h6.8"/></svg>`;
+  const ink = colored ? '#fff' : 'currentColor';
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true">${colored ? `<circle cx="12" cy="12" r="11" fill="${MOOD_COL[v - 1]}"/>` : '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/>'}`
+    + `<circle cx="9" cy="10" r="1.2" fill="${ink}"/><circle cx="15" cy="10" r="1.2" fill="${ink}"/><path d="${MOUTHS[v - 1]}" fill="none" stroke="${ink}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+}
+// Today gets a tappable face in the top-right corner of its card; past days only show what was picked.
+function moodButton(k){
+  const m = S.mood[k], names = MOOD_NAMES[lang] || MOOD_NAMES.en;
+  if (k !== TK) return `<span class="mood-btn ro" role="img" aria-label="${esc(t('mood'))}: ${esc(names[m.v - 1])}">${face(m.v, 30, true)}</span>`;
+  return `<button class="mood-btn${m ? '' : ' empty'}" data-act="mood-open" aria-expanded="${ui.moodOpen}" aria-label="${esc(m ? t('mood') + ': ' + names[m.v - 1] : t('moodAsk'))}">${m ? face(m.v, 34, true) : face(0, 30)}</button>`;
+}
+function moodPop(){
+  const m = S.mood[TK], names = MOOD_NAMES[lang] || MOOD_NAMES.en;
+  return `<div class="mood-pop" role="dialog" aria-label="${esc(t('mood'))}"><div class="mood-q">${esc(t('moodAsk'))}</div><div class="mood-faces">`
+    + [1, 2, 3, 4, 5].map(v => `<button class="mf${m && m.v === v ? ' on' : ''}" data-act="mood-pick" data-v="${v}" aria-pressed="${!!(m && m.v === v)}">${face(v, 36, true)}<small>${esc(names[v - 1])}</small></button>`).join('') + `</div>`
+    + (m ? `<div class="mood-row"><input id="moodNote" class="mood-note" type="text" maxlength="140" autocomplete="off" placeholder="${esc(t('moodNotePh'))}" aria-label="${esc(t('moodNotePh'))}" value="${esc(m.note || '')}"><button class="btn primary sm-btn" data-act="mood-close">${esc(t('moodDone'))}</button></div>` : '')
+    + `</div>`;
+}
+function moodInsights(){
+  const keys = Object.keys(S.mood).filter(k => k <= TK && diffDays(k, TK) <= 90).sort();
+  if (keys.length < 4) return [];
+  const all = allTasks(), out = [], avg = a => a.reduce((s, v) => s + v, 0) / a.length;
+  const planned = k => all.filter(x => x.date === k).length;
+  const doneN = k => all.filter(x => x.done && x.doneAt && keyOf(new Date(x.doneAt)) === k).length;
+  const split = fn => { const a = [], b = []; keys.forEach(k => (fn(k) ? a : b).push(S.mood[k].v)); return a.length >= 2 && b.length >= 2 ? [avg(a), avg(b)] : null; };
+  const loads = keys.map(planned).sort((a, b) => a - b), thr = Math.max(4, loads[Math.floor(loads.length * .75)]);
+  const l = split(k => planned(k) >= thr);
+  if (l && l[1] - l[0] >= .5) out.push(t('insMoodLoad', {n: thr, a: fmtNum(l[0]), b: fmtNum(l[1])}));
+  const dn = keys.map(doneN).sort((a, b) => a - b), med = dn[Math.floor(dn.length / 2)];
+  const d = split(k => doneN(k) > med);
+  if (d && d[0] - d[1] >= .5) out.push(t('insMoodDone', {a: fmtNum(d[0]), b: fmtNum(d[1])}));
+  if (S.habits.length){ const h = split(k => S.habits.every(hb => habitDone(hb.id, k))); if (h && h[0] - h[1] >= .5) out.push(t('insMoodHabits', {a: fmtNum(h[0]), b: fmtNum(h[1])})); }
+  if (keys.length >= 7){
+    const by = [...Array(7)].map(() => []); keys.forEach(k => by[(parseKey(k).getDay() + 6) % 7].push(S.mood[k].v));
+    let best = -1, bv = 0; by.forEach((arr, i) => { if (arr.length >= 2 && avg(arr) > bv){ bv = avg(arr); best = i; } });
+    if (best >= 0) out.push(t('insMoodBest', {d: fmt(addDays(startOfWeek(parseKey(TK)), best), {weekday: 'long'})}));
+  }
+  return out;
+}
+
+/* ================= big goals ================= */
+function horizonDue(h){
+  const d = parseKey(TK);
+  if (h === 'month') return keyOf(new Date(d.getFullYear(), d.getMonth() + 1, 0));
+  if (h === 'quarter') return keyOf(new Date(d.getFullYear(), Math.floor(d.getMonth() / 3) * 3 + 3, 0));
+  if (h === 'year') return keyOf(new Date(d.getFullYear(), 12, 0));
+  return null;
+}
+function goalProgress(id){ const list = allTasks().filter(x => x.goal === id); return {list, total: list.length, done: list.filter(x => x.done).length}; }
+function goalCard(g){
+  const p = goalProgress(g.id), pct = p.total ? Math.round(p.done / p.total * 100) : 0, left = g.due ? diffDays(TK, g.due) : null;
+  const due = g.due ? t('dueBy', {d: fmt(parseKey(g.due), {day: 'numeric', month: 'long'})}) + (left >= 0 && !g.achieved ? ' · ' + t('daysLeft', {n: left}) : '') : t('hNone');
+  const next = p.list.filter(x => !x.done).sort((a, b) => (eff(a) || '9999') < (eff(b) || '9999') ? -1 : 1).slice(0, 3);
+  return `<article class="gcard${g.achieved ? ' achieved' : ''}"><button class="gc-head" data-act="goal-edit" data-id="${g.id}"><span class="gc-ic">${g.achieved ? ICON.trophy : ICON.targetBig}</span>`
+    + `<span class="gc-tx"><b>${esc(g.title)}</b><small>${esc(g.achieved ? t('achieved') : due)}</small></span>${ICON.edit}</button>`
+    + `<div class="gc-prog"><span class="gc-bar"><i style="width:${pct}%"></i></span><b>${esc(t('ofN', {d: p.done, n: p.total}))}</b></div>`
+    + (g.achieved ? '' : (next.length ? `<ul class="tasks">${next.map(x => taskRow(x, {noGrip: true, dateMeta: true})).join('')}</ul>` : `<p class="empty">${esc(t('noSteps'))}</p>`)
+      + `<div class="gc-acts"><button class="btn ghost sm-btn" data-act="goal-step" data-id="${g.id}">${ICON.plus}<span>${esc(t('addStep'))}</span></button>`
+      + (p.total && p.done === p.total ? `<button class="btn primary sm-btn" data-act="goal-achieve" data-id="${g.id}">${esc(t('markAchieved'))}</button>` : '') + `</div>`)
+    + `</article>`;
+}
+function renderGoals(){
+  const active = S.goals.filter(g => !g.achieved), done = S.goals.filter(g => g.achieved);
+  let h = S.goals.length ? '' : `<div class="empty-big">${ICON.targetBig}<p>${esc(t('bigEmpty'))}</p></div>`;
+  h += active.map(goalCard).join('') + `<button class="btn ${S.goals.length ? 'ghost' : 'primary'} block" data-act="goal-new">${ICON.plus}<span>${esc(t('newBigGoal'))}</span></button>`;
+  if (done.length) h += `<h3 class="sec-h">${esc(t('achievedList'))}</h3>` + done.map(goalCard).join('');
+  $('#scrGoals').innerHTML = scrHead(t('bigGoals'), `<button class="icon-btn" data-act="goal-new" aria-label="${esc(t('newBigGoal'))}">${ICON.plus}</button>`) + `<div class="scr-body">${h}</div>`;
+}
+const gsHChips = () => [['month', 'hMonth'], ['quarter', 'hQuarter'], ['year', 'hYear'], ['none', 'hNone']].map(([v, k]) => chipB('gs-h', v, esc(t(k)), GS.h === v)).join('');
+function gsDue(){ const g = goalOf(GS.id); return g && g.h === GS.h ? g.due : horizonDue(GS.h); }
+const gsDueText = () => { const d = gsDue(); return d ? t('dueBy', {d: fmt(parseKey(d), {day: 'numeric', month: 'long', year: 'numeric'})}) : ''; };
+function openGoalSheet(id){
+  const g = goalOf(id);
+  SH = HS = TS = null; ui.sheet = 'goal';
+  GS = {id: g ? g.id : null, h: g ? g.h : 'month', confirmDel: false};
+  $('#sheet').innerHTML = sheetHead(t(g ? 'bigGoal' : 'newBigGoal'))
+    + `<form data-form="goal-sheet" autocomplete="off"><input id="gsTitle" class="big-input" type="text" maxlength="80" placeholder="${esc(t('bigGoalPh'))}" aria-label="${esc(t('bigGoal'))}" value="${esc(g ? g.title : '')}">`
+    + `<div class="fl">${esc(t('horizon'))}</div><div class="chips" id="gsH">${gsHChips()}</div><p class="fl-note" id="gsDue">${esc(gsDueText())}</p>`
+    + (g ? `<button type="button" class="btn ghost block cal-btn" data-act="goal-achieve" data-id="${g.id}">${g.achieved ? ICON.targetBig : ICON.trophy}<span>${esc(t(g.achieved ? 'reopen' : 'markAchieved'))}</span></button>` : '')
+    + `<div class="sh-actions">${g ? `<button type="button" class="btn ghost danger" data-act="gs-del">${ICON.trash}<span>${esc(t('del'))}</span></button>` : ''}<button type="submit" class="btn primary">${esc(t(g ? 'save' : 'create'))}</button></div></form>`;
+  openLayer('#sheetWrap');
+}
+function saveGoal(){
+  const inp = $('#gsTitle'), title = inp.value.trim(); if (!title){ shake(inp); return; }
+  const g = goalOf(GS.id), due = gsDue();
+  if (g) Object.assign(g, {title: title.slice(0, 80), h: GS.h, due});
+  else S.goals.push({id: uid('g'), title: title.slice(0, 80), h: GS.h, due, achieved: false, createdAt: Date.now()});
+  closeSheet(); persist(); renderAll();
+}
+function toggleAchieved(id){
+  const g = goalOf(id); if (!g) return;
+  g.achieved = !g.achieved;
+  if (ui.sheet === 'goal') closeSheet();
+  persist(); renderAll();
+  if (g.achieved){ sparks(innerWidth / 2, innerHeight / 3, TH().accent); haptic([20, 60, 20]); }
+}
+function deleteGoal(id){
+  const goals = S.goals.slice(), linked = allTasks().filter(x => x.goal === id).map(x => x.id);
+  S.goals = S.goals.filter(g => g.id !== id); linked.forEach(tid => { S.tasks[tid] = Object.assign({}, S.tasks[tid], {goal: null}); });
+  closeSheet(); persist(); renderAll();
+  toast(t('deleted'), t('undo'), () => { S.goals = goals; linked.forEach(tid => { if (S.tasks[tid]) S.tasks[tid] = Object.assign({}, S.tasks[tid], {goal: id}); }); persist(); renderAll(); });
+}
+
+/* ================= templates ================= */
+function defaultTemplates(){
+  return (TPL_DEF[lang] || TPL_DEF.en).map(([name, items]) => ({id: uid('tp'), name, kind: 'set', items: items.map(x => ({t: x, time: null, section: null, star: false, off: 0}))}));
+}
+function renderTpl(){
+  const list = S.templates || [];
+  let h = `<p class="scr-note">${esc(t('tplHint'))}</p>` + list.map(p => `<article class="tpc"><div class="tpc-top"><span class="tpc-ic">${ICON.stackBig}</span><span class="tpc-tx"><b>${esc(p.name)}</b>`
+    + `<small>${esc(t(p.kind === 'week' ? 'weekKind' : 'setKind'))} · ${esc(pl('goalsPl', p.items.length))}</small></span></div>`
+    + `<p class="tpc-prev">${esc(p.items.slice(0, 4).map(i => i.t).join(' · '))}${p.items.length > 4 ? ' …' : ''}</p>`
+    + `<div class="gc-acts"><button class="btn primary sm-btn" data-act="tpl-apply" data-id="${p.id}">${ICON.plus}<span>${esc(t('add'))}</span></button><button class="btn ghost sm-btn" data-act="tpl-edit" data-id="${p.id}">${ICON.edit}<span>${esc(t('edit'))}</span></button></div></article>`).join('');
+  h += `<div class="tpl-new"><button class="btn ghost block" data-act="tpl-new">${ICON.plus}<span>${esc(t('newTemplate'))}</span></button><button class="btn ghost block" data-act="tpl-save-week">${ICON.calBig}<span>${esc(t('saveWeekTpl'))}</span></button></div>`;
+  $('#scrTpl').innerHTML = scrHead(t('templates')) + `<div class="scr-body">${h}</div>`;
+}
+function tplDayMenu(k){
+  const sets = (S.templates || []).filter(p => p.kind === 'set');
+  if (!sets.length){ openScreen('tpl'); return; }
+  openMenuSheet(t('fromTemplate'), fullDate(k), sets.map(p => ({act: 'tpl-do', data: {id: p.id, k}, icon: ICON.stackBig, label: p.name, sub: p.items.slice(0, 3).map(i => i.t).join(' · ')})));
+}
+function tplApplyMenu(id){
+  const p = (S.templates || []).find(x => x.id === id); if (!p) return;
+  if (p.kind === 'week'){
+    const cw = startOfWeek(parseKey(TK)), nw = addDays(cw, 7);
+    openMenuSheet(p.name, null, [[cw, 'thisWeekW'], [nw, 'nextWeekW']].map(([w, k]) => ({act: 'tpl-do', data: {id, k: keyOf(w)}, icon: ICON.calBig, label: t(k), sub: fmtRange(w, addDays(w, 6))})));
+  } else openMenuSheet(p.name, null, dateChoices().map(c => ({act: 'tpl-do', data: {id, k: c.k}, icon: ICON.calBig, label: c.label, sub: fullDate(c.k)})));
+}
+function applyTemplate(id, k){
+  const p = (S.templates || []).find(x => x.id === id); if (!p) return;
+  const made = p.items.map(i => {
+    const date = p.kind === 'week' ? keyOf(addDays(parseKey(k), i.off)) : k;
+    const x = newTask(i.t, date, secOf(i.section) ? i.section : null, {time: i.time, remind: i.time ? 0 : null, star: i.star});
+    S.tasks[x.id] = x; return x.id;
+  });
+  closeSheet();
+  if (p.kind === 'set') ui.open.add(k);
+  persist(); renderAll(); haptic([10, 40, 10]);
+  if (p.kind === 'set') flashBand(k);
+  toast(t('tplAdded', {n: made.length}), t('undo'), () => { made.forEach(x => { delete S.tasks[x]; }); persist(); renderAll(); });
+}
+function tsItemsHTML(){
+  const ws = startOfWeek(parseKey(TK));
+  return TS.items.map((i, n) => `<li class="step"><span>${TS.kind === 'week' ? `<em class="ts-day">${esc(cap(fmt(addDays(ws, i.off), {weekday: 'short'}).replace('.', '')))}</em>` : ''}${i.star ? ICON.star + ' ' : ''}${esc(i.t)}${i.time ? ` · ${i.time}` : ''}</span>`
+    + `<button type="button" class="step-del" data-act="ts-del" data-i="${n}" aria-label="${esc(t('del'))}">${sv('<path d="M6 6l12 12M18 6L6 18"/>', 14, 2.4)}</button></li>`).join('');
+}
+function openTplSheet(id){
+  const p = id ? (S.templates || []).find(x => x.id === id) : null;
+  SH = GS = HS = null; ui.sheet = 'tpl';
+  TS = {id: p ? p.id : null, kind: p ? p.kind : 'set', items: p ? p.items.map(i => Object.assign({}, i)) : [], confirmDel: false};
+  $('#sheet').innerHTML = sheetHead(p ? p.name : t('newTemplate'))
+    + `<form data-form="tpl-sheet" autocomplete="off"><input id="tsName" class="big-input" type="text" maxlength="40" placeholder="${esc(t('tplName'))}" aria-label="${esc(t('tplName'))}" value="${esc(p ? p.name : '')}">`
+    + `<div class="fl">${esc(t('items'))} <span id="tsCount">${TS.items.length}</span></div><ul class="steps" id="tsItems">${tsItemsHTML()}</ul>`
+    + `<div class="step-add"><span class="plus">${ICON.plus}</span><input id="tsItem" type="text" maxlength="200" autocomplete="off" enterkeyhint="enter" placeholder="${esc(t('tplItemPh'))}" aria-label="${esc(t('tplItemPh'))}"></div>`
+    + `<div class="sh-actions">${p ? `<button type="button" class="btn ghost danger" data-act="ts-remove">${ICON.trash}<span>${esc(t('del'))}</span></button>` : ''}<button type="submit" class="btn primary">${esc(t('save'))}</button></div></form>`;
+  openLayer('#sheetWrap');
+}
+function addTsItem(){
+  const inp = $('#tsItem'); if (!inp || !TS) return;
+  const v = inp.value.trim(); if (!v){ shake(inp); return; }
+  const p = parseQuick(v);
+  TS.items.push({t: (p.title || v).slice(0, 200), time: p.time || null, section: p.section || null, star: !!p.star, off: p.date ? (parseKey(p.date).getDay() + 6) % 7 : 0});
+  inp.value = ''; $('#tsItems').innerHTML = tsItemsHTML(); $('#tsCount').textContent = TS.items.length;
+}
+function saveTpl(){
+  const inp = $('#tsName'), name = inp.value.trim();
+  if ($('#tsItem').value.trim()) addTsItem();
+  if (!name){ shake(inp); return; }
+  if (!TS.items.length){ shake($('#tsItem')); return; }
+  const p = (S.templates || []).find(x => x.id === TS.id);
+  if (p) Object.assign(p, {name: name.slice(0, 40), items: TS.items});
+  else S.templates.push({id: uid('tp'), name: name.slice(0, 40), kind: TS.kind, items: TS.items});
+  closeSheet(); persist(); renderAll();
+}
+function saveWeekTemplate(){
+  const first = keyOf(ui.weekStart), last = keyOf(addDays(ui.weekStart, 6));
+  const list = allTasks().filter(x => x.date && x.date >= first && x.date <= last).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : byPri(a, b));
+  if (!list.length){ toast(t('tplEmptyWeek')); return; }
+  const p = {id: uid('tp'), name: t('weekN', {n: isoWeek(ui.weekStart)}), kind: 'week', items: list.map(x => ({t: x.title, time: x.time || null, section: x.section, star: !!x.star, off: diffDays(first, x.date)}))};
+  S.templates.push(p); persist(); renderTpl(); toast(t('tplWeekSaved')); openTplSheet(p.id);
+}
+
+/* ================= upcoming as an Eisenhower matrix ================= */
+function quadOf(x){
+  const k = eff(x), soon = keyOf(addDays(parseKey(TK), 1)), dsoon = keyOf(addDays(parseKey(TK), 2));
+  const urgent = (!!k && k <= soon) || (!!x.deadline && x.deadline <= dsoon);
+  return x.star ? (urgent ? 0 : 1) : (urgent ? 2 : 3);
+}
+function matrixHTML(list){
+  const q = [[], [], [], []], when = x => eff(x) || '9999';
+  list.forEach(x => q[quadOf(x)].push(x));
+  q.forEach(arr => arr.sort((a, b) => when(a) < when(b) ? -1 : when(a) > when(b) ? 1 : byPri(a, b)));
+  return `<p class="scr-note">${esc(t('matrixNote'))}</p><div class="quads">` + q.map((arr, i) => `<section class="quad q${i}"><h4>${esc(t('q' + (i + 1)))}</h4><p>${esc(t('q' + (i + 1) + 'd'))}</p>`
+    + (arr.length ? `<ul class="tasks">${arr.map(x => taskRow(x, {noGrip: true, noSec: true, dateMeta: true})).join('')}</ul>` : `<p class="empty">${esc(t('qEmpty'))}</p>`) + `</section>`).join('') + `</div>`;
+}
+
+/* ================= weekly review (merged with statistics) ================= */
+function weekData(ws){
+  const keys = [...Array(7)].map((_, i) => keyOf(addDays(ws, i))), first = keys[0], last = keys[6], all = allTasks(), inW = k => !!k && k >= first && k <= last;
+  const doneW = all.filter(x => x.done && inW(x.date)), pendW = all.filter(x => !x.done && (inW(x.date) || inW(eff(x))));
+  const elapsed = keys.filter(k => k <= TK), possible = S.habits.length * elapsed.length;
+  const hDone = elapsed.reduce((s, k) => s + S.habits.filter(h => habitDone(h.id, k)).length, 0);
+  const moods = keys.map(k => S.mood[k] ? S.mood[k].v : null), mv = moods.filter(Boolean);
+  return {keys, doneW: doneW.length, pendW: pendW.length, starDone: doneW.filter(x => x.star).length, starTotal: doneW.filter(x => x.star).length + pendW.filter(x => x.star).length,
+    doneByDay: keys.map(k => all.filter(x => x.done && x.doneAt && keyOf(new Date(x.doneAt)) === k).length),
+    habitPct: possible ? Math.round(hDone / possible * 100) : null, moods, moodAvg: mv.length ? mv.reduce((a, b) => a + b, 0) / mv.length : null};
+}
+function renderReview(){
+  const cw = startOfWeek(parseKey(TK));
+  if (!ui.revWeek || ui.revWeek > cw) ui.revWeek = cw;
+  const ws = ui.revWeek, wd = weekData(ws), isCur = keyOf(ws) === keyOf(cw), st = computeStats();
+  const total = wd.doneW + wd.pendW, pct = total ? Math.round(wd.doneW / total * 100) : 0, C = 2 * Math.PI * 34;
+  const maxD = Math.max(1, ...wd.doneByDay), bi = wd.doneByDay.indexOf(Math.max(...wd.doneByDay));
+  let h = `<div class="rv-nav"><button class="icon-btn" data-act="rv-week" data-d="-1" aria-label="${esc(t('prevWeek'))}">${ICON.chevL}</button><div><b>${esc(t('weekN', {n: isoWeek(ws)}))}</b><span>${esc(fmtRange(ws, addDays(ws, 6)))}</span></div>`
+    + `<button class="icon-btn" data-act="rv-week" data-d="1" aria-label="${esc(t('nextWeek'))}"${isCur ? ' disabled' : ''}>${ICON.chevR}</button></div>`;
+  h += `<section class="card rv-hero"><div class="rv-top"><span class="rv-ring"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="bgc" cx="40" cy="40" r="34"/><circle class="fgc" cx="40" cy="40" r="34" stroke-dasharray="${C * pct / 100} ${C}" transform="rotate(-90 40 40)"/></svg><b>${pct}%</b></span>`
+    + `<span class="rv-big"><b>${wd.doneW}<small> / ${total}</small></b><span>${esc(t('rDone'))}</span></span></div>`
+    + `<div class="rv-stats"><div class="rv-stat"><b>${ICON.star}${wd.starDone}/${wd.starTotal}</b><span>${esc(t('rStar'))}</span></div>`
+    + `<div class="rv-stat"><b>${wd.habitPct === null ? '—' : wd.habitPct + '%'}</b><span>${esc(t('rHabits'))}</span></div>`
+    + `<div class="rv-stat"><b>${wd.moodAvg ? face(Math.round(wd.moodAvg), 20, true) + fmtNum(wd.moodAvg) : '—'}</b><span>${esc(t('rMood'))}</span></div></div>`
+    + `<div class="rv-days" role="img" aria-label="${esc(t('moodWeek'))}">${wd.keys.map((k, i) => `<div class="rv-d${i === bi && wd.doneByDay[i] ? ' best' : ''}${k === TK ? ' now' : ''}"><span class="rv-mood">${wd.moods[i] ? face(wd.moods[i], 20, true) : ''}</span>`
+      + `<span class="rv-bar"><i style="height:${wd.doneByDay[i] / maxD * 100}%"></i></span><em>${wd.doneByDay[i]}</em><span>${esc(fmt(parseKey(k), {weekday: 'narrow'}))}</span></div>`).join('')}</div>`
+    + (wd.doneByDay[bi] ? `<p class="rv-best">${esc(t('bestDayN', {d: cap(fmt(parseKey(wd.keys[bi]), {weekday: 'long'})), n: pl('goalsPl', wd.doneByDay[bi])}))}</p>` : '')
+    + `<button class="btn ghost block rv-share" data-act="share-week">${ICON.share}<span>${esc(t('shareWeek'))}</span></button></section>`;
+  const ins = moodInsights().concat(insights(st));
+  h += `<section class="card"><h3>${esc(t('sInsights'))}</h3><ul class="ins">${ins.slice(0, 6).map(s => `<li>${esc(s)}</li>`).join('')}</ul>${Object.keys(S.mood).length ? '' : `<p class="fl-note">${esc(t('moodNone'))}</p>`}</section>`;
+  h += `<section class="card"><h3>${esc(t('sStuck'))}</h3>` + (st.stuck.length ? st.stuck.slice(0, 6).map(s => `<button class="stuck-row" data-act="stuck-help" data-id="${s.x.id}"><span>${esc(s.x.title)}</span><em>${esc(t('carried', {n: s.n}))}</em></button>`).join('') : `<p class="empty">${esc(t('sStuckNone'))}</p>`) + `</section>`;
+  const lim = keyOf(addDays(parseKey(TK), 7)), dls = allTasks().filter(x => !x.done && x.deadline && x.deadline <= lim).sort((a, b) => a.deadline < b.deadline ? -1 : 1);
+  h += `<section class="card"><h3>${esc(t('dueList'))}</h3>` + (dls.length ? dls.slice(0, 6).map(x => `<button class="stuck-row" data-act="open-task" data-id="${x.id}"><span>${esc(x.title)}</span>${dlChip(x.deadline)}</button>`).join('') : `<p class="empty">${esc(t('dueNone'))}</p>`) + `</section>`;
+  const gl = S.goals.filter(g => !g.achieved);
+  h += `<section class="card"><h3>${esc(t('bigGoals'))}</h3>` + (gl.length ? `<div class="hbars">${gl.slice(0, 5).map(g => { const p = goalProgress(g.id); return `<div class="hb" style="--c:var(--accent)"><span class="hb-name">${ICON.target}<span>${esc(g.title)}</span></span><span class="hb-n">${p.done}/${p.total}</span><span class="hb-track"><i style="width:${p.total ? p.done / p.total * 100 : 0}%"></i></span></div>`; }).join('')}</div>` : `<p class="empty">${esc(t('goalsNone'))}</p>`)
+    + `<button class="btn ghost block card-btn" data-act="open-goals">${ICON.targetBig}<span>${esc(t('openGoals'))}</span></button></section>`;
+  const earned = S.ach || {}, txt = ACH_TXT[lang] || ACH_TXT.en;
+  h += `<section class="card"><h3>${esc(t('achievements'))} · ${ACH_IDS.filter(id => earned[id]).length}/${ACH_IDS.length}</h3><div class="ach">`
+    + ACH_IDS.map(id => `<div class="ach-b${earned[id] ? ' on' : ''}"><span class="ach-ic">${ACH_ICON[id]()}</span><b>${esc(txt[id][0])}</b><small>${esc(txt[id][1])}</small></div>`).join('') + `</div></section>`;
+  h += `<h2 class="sec-h">${esc(t('allStats'))}</h2>` + statsBody(st);
+  $('#scrStats').innerHTML = scrHead(t('stats')) + `<div class="scr-body">${h}</div>`;
+}
+
+/* ================= achievements ================= */
+const ACH_IDS = ['first', 'ten', 'hundred', 'streak7', 'streak30', 'perfect', 'early', 'stars', 'ontime', 'habit7', 'mood7', 'biggoal'];
+const ACH_ICON = {first: () => ICON.done, ten: () => ICON.flameBig, hundred: () => ICON.trophy, streak7: () => ICON.flameBig, streak30: () => ICON.flameBig,
+  perfect: () => ICON.starBtn, early: () => ICON.sun, stars: () => ICON.starBtn, ontime: () => ICON.flagBig, habit7: () => ICON.done, mood7: () => face(5, 22), biggoal: () => ICON.targetBig};
+function earnedAch(){
+  const all = allTasks(), done = all.filter(x => x.done && x.doneAt), n = done.length, out = [];
+  const runs = keys => { let best = 0, run = 0, prev = null; keys.sort().forEach(k => { run = prev && diffDays(prev, k) === 1 ? run + 1 : 1; best = Math.max(best, run); prev = k; }); return best; };
+  if (n >= 1) out.push('first'); if (n >= 10) out.push('ten'); if (n >= 100) out.push('hundred');
+  const streak = runs([...new Set(done.map(x => keyOf(new Date(x.doneAt))))]);
+  if (streak >= 7) out.push('streak7'); if (streak >= 30) out.push('streak30');
+  const weeks = {};
+  all.forEach(x => { if (!x.date) return; const w = keyOf(startOfWeek(parseKey(x.date))), r = weeks[w] = weeks[w] || {d: 0, p: 0}; if (x.done) r.d++; else r.p++; });
+  if (Object.values(weeks).some(r => !r.p && r.d >= 7)) out.push('perfect');
+  if (done.filter(x => new Date(x.doneAt).getHours() < 9).length >= 5) out.push('early');
+  if (done.filter(x => x.star).length >= 10) out.push('stars');
+  if (done.filter(x => x.deadline && keyOf(new Date(x.doneAt)) <= x.deadline).length >= 10) out.push('ontime');
+  if (S.habits.some(h => habitBest(h.id) >= 7)) out.push('habit7');
+  if (runs(Object.keys(S.mood)) >= 7) out.push('mood7');
+  if (S.goals.some(g => g.achieved)) out.push('biggoal');
+  return out;
+}
+var achT = 0; // var: persist() can run before this part of the script has been evaluated
+function scheduleAch(){ clearTimeout(achT); achT = setTimeout(checkAchievements, 700); }
+function persistQuiet(){ clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(_){} }, 120); }
+function checkAchievements(){
+  const got = earnedAch();
+  if (!S.ach){ S.ach = {}; got.forEach(id => { S.ach[id] = Date.now(); }); persistQuiet(); return; } // first run: no fanfare for old progress
+  const fresh = got.filter(id => !S.ach[id]);
+  if (!fresh.length) return;
+  fresh.forEach(id => { S.ach[id] = Date.now(); });
+  persistQuiet();
+  const name = (ACH_TXT[lang] || ACH_TXT.en)[fresh[0]][0];
+  const show = () => {
+    if ($('#toast').classList.contains('show')){ setTimeout(show, 700); return; }
+    toast(t('achUnlocked', {a: name})); sparks(innerWidth / 2, innerHeight * .78, TH().accent); haptic([20, 60, 20]);
+    if (ui.screen === 'stats') renderReview();
+  };
+  setTimeout(show, 900);
+}
+
+/* ================= voice input ================= */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null;
+const micBtn = id => SR ? `<button type="button" class="mic" data-act="voice" data-target="${id}" aria-label="${esc(t('voice'))}" title="${esc(t('voice'))}">${ICON.mic}</button>` : '';
+function startVoice(id, btn){
+  if (rec){ stopVoice(); return; }
+  const inp = document.getElementById(id); if (!inp) return;
+  try { rec = new SR(); } catch(_){ rec = null; return; }
+  const base = inp.value.trim() ? inp.value.trim() + ' ' : '';
+  rec.lang = LOCALES[lang]; rec.interimResults = true; rec.continuous = false;
+  btn.classList.add('on'); haptic(10);
+  rec.onresult = e => { let s = ''; for (let i = 0; i < e.results.length; i++) s += e.results[i][0].transcript; inp.value = base + s; inp.dispatchEvent(new Event('input', {bubbles: true})); };
+  rec.onerror = e => { if (e.error !== 'aborted' && e.error !== 'no-speech') toast(t('voiceFail')); };
+  rec.onend = () => { document.querySelectorAll('.mic.on').forEach(b => b.classList.remove('on')); rec = null; };
+  try { rec.start(); } catch(_){ rec = null; btn.classList.remove('on'); }
+}
+function stopVoice(){ if (rec){ try { rec.stop(); } catch(_){} } }
+
+/* ================= the week as a picture ================= */
+const LOGO_PATH = 'M14 18H27.5L34.7 50L42.8 26H57.2L65.3 50L72.5 18H86L73.4 66H59L50 40.4L41 66H26.6Z';
+const rrect = (c, x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); };
+function drawFace(c, cx, cy, r, v){
+  const s = r / 11; c.save(); c.translate(cx - 12 * s, cy - 12 * s); c.scale(s, s);
+  c.fillStyle = MOOD_COL[v - 1]; c.beginPath(); c.arc(12, 12, 11, 0, 7); c.fill();
+  c.fillStyle = '#fff'; [9, 15].forEach(x => { c.beginPath(); c.arc(x, 10, 1.2, 0, 7); c.fill(); });
+  c.strokeStyle = '#fff'; c.lineWidth = 1.8; c.lineCap = 'round'; c.stroke(new Path2D(MOUTHS[v - 1])); c.restore();
+}
+// Drawn and handed to the share sheet in the same tap: browsers drop a share that waits on anything.
+function shareWeek(){
+  const ws = ui.revWeek || startOfWeek(parseKey(TK)), wd = weekData(ws), th = TH(), bands = bandsOf(S.theme);
+  const W = 1080, H = 1920, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const c = cv.getContext('2d'), DF = '"Fira Sans Condensed","Arial Narrow",sans-serif', BF = '"Golos Text",system-ui,sans-serif';
+  c.fillStyle = th.bg; c.fillRect(0, 0, W, H);
+  c.fillStyle = th.accent; rrect(c, 80, 96, 112, 112, 32); c.fill();
+  c.save(); c.translate(80, 96); c.scale(1.12, 1.12); c.fillStyle = th.accentInk; c.fill(new Path2D(LOGO_PATH));
+  [.35, .45, .55, .66, .77, .88, 1].forEach((o, i) => { c.globalAlpha = o; c.beginPath(); c.arc(23 + i * 9, 82, 3.2, 0, 7); c.fill(); });
+  c.restore(); c.globalAlpha = 1;
+  c.fillStyle = th.ink; c.textBaseline = 'middle'; c.font = `800 60px ${DF}`; c.fillText('WEEKY', 220, 154);
+  c.textBaseline = 'alphabetic'; c.font = `800 120px ${DF}`; c.fillText(t('weekN', {n: isoWeek(ws)}).toLocaleUpperCase(LOCALES[lang]), 76, 370);
+  c.fillStyle = th.muted; c.font = `500 42px ${BF}`; c.fillText(fmtRange(ws, addDays(ws, 6)), 80, 436);
+  const top = 500, bh = 150;
+  wd.keys.forEach((k, i) => {
+    const y = top + i * bh, d = parseKey(k), b = bands[i];
+    c.fillStyle = b.bg; c.fillRect(0, y, W, bh);
+    c.fillStyle = b.ink; c.textBaseline = 'middle'; c.font = `800 70px ${DF}`; c.fillText(dayName(d), 76, y + bh / 2 - 12);
+    c.globalAlpha = .66; c.font = `500 30px ${BF}`; c.fillText(dateLong(d), 80, y + bh / 2 + 40); c.globalAlpha = 1;
+    c.textAlign = 'right'; c.font = `700 54px ${BF}`; c.fillText(wd.doneByDay[i] ? '✓ ' + wd.doneByDay[i] : '·', W - 80, y + bh / 2); c.textAlign = 'left';
+    if (wd.moods[i]) drawFace(c, W - 250, y + bh / 2, 32, wd.moods[i]);
+  });
+  const sy = top + 7 * bh + 150, total = wd.doneW + wd.pendW;
+  [[`${wd.doneW}/${total}`, t('rDone')], [`★ ${wd.starDone}`, t('rStar')], wd.moodAvg ? [fmtNum(wd.moodAvg), t('rMood')] : [wd.habitPct === null ? '—' : wd.habitPct + '%', t('rHabits')]]
+    .forEach(([v, l], i) => { const x = 80 + i * 330; c.fillStyle = th.ink; c.font = `800 88px ${DF}`; c.fillText(v, x, sy); c.fillStyle = th.muted; c.font = `500 34px ${BF}`; c.fillText(l, x + 2, sy + 52); });
+  c.fillStyle = th.muted; c.font = `500 30px ${BF}`;
+  c.fillText(location.protocol.indexOf('http') === 0 ? location.host + location.pathname.replace(/index\.html$/, '') : 'Weeky', 80, H - 80);
+  const bin = atob(cv.toDataURL('image/png').split(',')[1]), bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const name = `weeky-week-${isoWeek(ws)}.png`, blob = new Blob([bytes], {type: 'image/png'});
+  let file = null; try { file = new File([blob], name, {type: 'image/png'}); } catch(_){}
+  if (file && navigator.canShare && navigator.canShare({files: [file]})){ navigator.share({files: [file], title: 'Weeky'}).catch(() => {}); return; }
+  const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000); toast(t('shareMade'));
 }
 
 /* ================= toast & tip ================= */
@@ -1323,13 +2159,13 @@ function fxLoop(){
 }
 
 /* ================= actions ================= */
-function completeTask(id, btn){
+function completeTask(id, btn, msg){
   const x = S.tasks[id]; if (!x || x.done || ui.completing.has(id)) return;
   const before = Object.assign({}, x);
   ui.completing.add(id);
   const row = btn.closest('.task'); row.classList.add('completing');
-  const r = btn.getBoundingClientRect(), sec = secOf(x.section);
-  sparks(r.left + r.width / 2, r.top + r.height / 2, sec ? sec.color : TH().accent);
+  const r = btn.getBoundingClientRect();
+  sparks(r.left + r.width / 2, r.top + r.height / 2, TH().accent);
   haptic(8);
   const wait = reduced ? 200 : 760;
   setTimeout(() => {
@@ -1337,12 +2173,12 @@ function completeTask(id, btn){
   }, wait);
   setTimeout(() => {
     ui.completing.delete(id);
-    if (S.tasks[id] && !S.tasks[id].done) finishTask(id, before);
+    if (S.tasks[id] && !S.tasks[id].done) finishTask(id, before, msg);
   }, wait + 330);
 }
-function finishTask(id, before){
+function finishTask(id, before, msg){
   const sp = setDone(id, true);
-  toast(sp ? t('nextAdded', {d: shortDate(sp.date)}) : t('doneToast'), t('undo'), () => { if (sp && S.tasks[sp.id]) dropTask(sp.id); putTask(before); });
+  toast(sp ? t('nextAdded', {d: shortDate(sp.date)}) : (msg || t('doneToast')), t('undo'), () => { if (sp && S.tasks[sp.id]) dropTask(sp.id); putTask(before); });
 }
 function toggleDay(band){
   const k = band.dataset.day, open = !ui.open.has(k);
@@ -1403,7 +2239,8 @@ const ACTS = {
   'week-next': () => goWeek(addDays(ui.weekStart, 7)),
   'go-today': () => { const cw = startOfWeek(parseKey(TK)); ui.open.add(TK); if (!isCurrentWeek()) goWeek(cw); else { const b = document.querySelector(`.band[data-day="${TK}"]`); if (b && !b.classList.contains('open')) toggleDay(b); } setTimeout(() => scrollToBand(TK), 260); },
   'toggle': a => toggleDay(a.closest('.band')),
-  'inbox-toggle': () => { ui.inboxOpen = !ui.inboxOpen; ui.assignFor = null; ui.mc = null; renderInbox(); },
+  'inbox-toggle': () => { ui.inboxOpen = !ui.inboxOpen; if (!ui.inboxOpen) ui.noteTab = 'tasks'; ui.assignFor = null; ui.mc = null; renderInbox(); },
+  'note-main': () => { if (ui.inboxOpen && ui.noteTab !== 'tasks') ui.noteTab = 'tasks'; else { ui.inboxOpen = !ui.inboxOpen; ui.noteTab = 'tasks'; } ui.assignFor = null; ui.mc = null; renderInbox(); },
   'check': a => completeTask(a.closest('[data-id]').dataset.id, a),
   'uncheck': a => { const id = a.closest('[data-id]').dataset.id; setDone(id, false); toast(t('restored')); },
   'edit': a => openTaskSheet({id: a.closest('[data-id]').dataset.id}),
@@ -1423,25 +2260,74 @@ const ACTS = {
   'rm-snooze': () => { const r = remCur; if (r){ fired[r.k] = {at: Date.now(), snooze: Date.now() + 600000}; saveFired(); } hideReminder(); },
   'rm-close': () => hideReminder(),
   'mc-open': a => {
-    const scope = a.dataset.scope, id = a.dataset.id || null;
+    const scope = a.dataset.scope, id = a.dataset.id || null, inSheet = scope === 'sheet' || scope === 'deadline';
     if (ui.mc && ui.mc.scope === scope && ui.mc.id === id) ui.mc = null;
     else {
-      const k = scope === 'sheet' ? shEff().date : (S.tasks[id] && S.tasks[id].date), d = parseKey(k && k > TK ? k : TK);
+      const k = scope === 'sheet' ? shEff().date : scope === 'deadline' ? shEff().deadline : (S.tasks[id] && S.tasks[id].date), d = parseKey(k && k > TK ? k : TK);
       ui.mc = {scope, id, month: new Date(d.getFullYear(), d.getMonth(), 1)};
     }
-    if (scope === 'sheet'){ SH.tpOpen = false; sheetGroups(); } else renderInbox();
+    if (inSheet){ SH.tpOpen = false; sheetGroups(); } else renderInbox();
   },
   'mc-nav': a => {
     if (!ui.mc) return;
     const m = ui.mc.month; ui.mc.month = new Date(m.getFullYear(), m.getMonth() + Number(a.dataset.d), 1);
-    if (ui.mc.scope === 'sheet') sheetGroups(); else renderInbox();
+    if (ui.mc.scope === 'sheet' || ui.mc.scope === 'deadline') sheetGroups(); else renderInbox();
   },
   'mc-pick': a => {
     const mc = ui.mc; if (!mc) return;
     ui.mc = null; haptic(8);
     if (mc.scope === 'sheet'){ SH.base.date = a.dataset.k; SH.manual.date = true; sheetGroups(); }
+    else if (mc.scope === 'deadline'){ SH.base.deadline = a.dataset.k; SH.manual.deadline = true; sheetGroups(); }
     else setTaskDate(mc.id, a.dataset.k);
   },
+  // priority, steps and the "More" block of the goal sheet
+  'sheet-star': () => { SH.base.star = !shEff().star; SH.manual.star = true; haptic(8); sheetGroups(); },
+  'sheet-more': () => { SH.moreOpen = !SH.moreOpen; sheetGroups(); },
+  'sheet-dl': a => { SH.base.deadline = a.dataset.v || null; SH.manual.deadline = true; if (ui.mc && ui.mc.scope === 'deadline') ui.mc = null; sheetGroups(); },
+  'sheet-goal': a => { SH.base.goal = a.dataset.v || null; SH.manual.goal = true; sheetGroups(); },
+  'step-tick': a => tickStep(+a.dataset.i),
+  'step-del': a => { SH.steps.splice(+a.dataset.i, 1); sheetGroups(); },
+  'open-task': a => openTaskSheet({id: a.dataset.id}),
+  'stuck-help': a => stuckMenu(a.dataset.id || a.closest('[data-id]').dataset.id),
+  'stuck-do': a => stuckDo(a.dataset.id, a.dataset.how),
+  'spread': () => spreadInbox(),
+  'voice': a => startVoice(a.dataset.target, a),
+  // the note: tasks and habits
+  'note-tab': () => { const on = ui.inboxOpen && ui.noteTab === 'habits'; ui.noteTab = on ? 'tasks' : 'habits'; ui.inboxOpen = true; ui.assignFor = null; ui.mc = null; renderInbox(); },
+  'habit-tick': a => tickHabit(a.dataset.id, a.dataset.k, a),
+  'habit-edit': a => openHabitSheet(a.dataset.id),
+  'hs-del': a => { if (!HS.confirmDel){ HS.confirmDel = true; a.classList.add('confirm'); a.querySelector('span').textContent = t('delQ'); return; } deleteHabit(HS.id); },
+  // mood
+  'mood-open': () => { ui.moodOpen = !ui.moodOpen; renderWeek(); },
+  'mood-pick': a => { const m = S.mood[TK]; S.mood[TK] = {v: +a.dataset.v, note: m ? m.note : ''}; haptic(8); persist(); renderWeek(); },
+  'mood-close': () => { ui.moodOpen = false; renderWeek(); },
+  // big goals
+  'open-goals': () => openScreen('goals'),
+  'goal-new': () => openGoalSheet(null),
+  'goal-edit': a => openGoalSheet(a.dataset.id),
+  'goal-step': a => openTaskSheet({goal: a.dataset.id}),
+  'goal-achieve': a => toggleAchieved(a.dataset.id),
+  'gs-h': a => { GS.h = a.dataset.v; $('#gsH').innerHTML = gsHChips(); $('#gsDue').textContent = gsDueText(); },
+  'gs-del': a => { if (!GS.confirmDel){ GS.confirmDel = true; a.classList.add('confirm'); a.querySelector('span').textContent = t('delQ'); return; } deleteGoal(GS.id); },
+  // templates
+  'open-tpl': () => openScreen('tpl'),
+  'tpl-day': a => tplDayMenu(a.closest('.band').dataset.day),
+  'tpl-apply': a => tplApplyMenu(a.dataset.id),
+  'tpl-do': a => applyTemplate(a.dataset.id, a.dataset.k),
+  'tpl-edit': a => openTplSheet(a.dataset.id),
+  'tpl-new': () => openTplSheet(null),
+  'tpl-save-week': () => saveWeekTemplate(),
+  'ts-del': a => { TS.items.splice(+a.dataset.i, 1); $('#tsItems').innerHTML = tsItemsHTML(); $('#tsCount').textContent = TS.items.length; },
+  'ts-remove': a => {
+    if (!TS.confirmDel){ TS.confirmDel = true; a.classList.add('confirm'); a.querySelector('span').textContent = t('delQ'); return; }
+    const all = S.templates.slice(); S.templates = S.templates.filter(p => p.id !== TS.id);
+    closeSheet(); persist(); renderAll();
+    toast(t('deleted'), t('undo'), () => { S.templates = all; persist(); renderAll(); });
+  },
+  // upcoming as a matrix, the review
+  'up-mode': a => { ui.upMode = a.dataset.mode; renderUp(); },
+  'rv-week': a => { ui.revWeek = addDays(ui.revWeek, 7 * Number(a.dataset.d)); renderReview(); },
+  'share-week': () => shareWeek(),
   'tp-open': () => { SH.tpOpen = !SH.tpOpen; if (ui.mc && ui.mc.scope === 'sheet') ui.mc = null; sheetGroups(); },
   'tp-h': a => {
     const cur = shEff().time;
@@ -1485,7 +2371,7 @@ const ACTS = {
     if (ui.doneFilter === id) ui.doneFilter = null;
     saveSettings(); renderAll(); renderDrawer();
   },
-  'sec-color': a => { ui.newSecColor = a.dataset.color; document.querySelectorAll('.sw').forEach(s => s.classList.toggle('on', s.dataset.color === ui.newSecColor)); },
+  'sec-icon': a => { ui.newSecIcon = a.dataset.icon; document.querySelectorAll('.icons .ic').forEach(b => { const on = b.dataset.icon === ui.newSecIcon; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }); },
   'theme': a => { S.theme = a.dataset.theme; applyTheme(); saveSettings(); document.querySelectorAll('.theme-card').forEach(c => { const on = c.dataset.theme === S.theme; c.classList.toggle('on', on); c.setAttribute('aria-pressed', on); }); },
   'lang': a => { S.lang = lang = a.dataset.lang; saveSettings(); renderAll(); renderDrawer(); },
   'open-done': () => openScreen('done'),
@@ -1501,7 +2387,6 @@ const ACTS = {
   'cal-add': () => openTaskSheet({date: ui.calSel, lockDate: true}),
   'done-group': a => { ui.doneGroup = a.dataset.g; renderDone(); },
   'done-filter': a => { ui.doneFilter = a.dataset.sec || null; renderDone(); },
-  'stuck-open': a => openTaskSheet({id: a.dataset.id}),
   'toast-action': () => { const fn = toastFn; toastFn = null; $('#toast').classList.remove('show'); if (fn) fn(); }
 };
 
@@ -1515,6 +2400,7 @@ document.addEventListener('click', e => {
   const bar = e.target.closest('.chart .bar');
   if (bar) { showTip(bar); return; }
   hideTip();
+  if (ui.moodOpen && !e.target.closest('.mood-pop, .mood-btn')){ ui.moodOpen = false; const p = $('.mood-pop'); if (p) p.remove(); }
   const a = e.target.closest('[data-act]'); if (!a) return;
   const fn = ACTS[a.dataset.act]; if (fn) fn(a, e);
 });
@@ -1526,19 +2412,28 @@ document.addEventListener('submit', e => {
     const inp = f.querySelector('input'), v = inp.value.trim(); if (!v) return;
     inp.value = ''; f.classList.remove('has-text');
     const p = parseQuick(v), date = p.date !== undefined ? p.date : (p.repeat ? TK : null);
-    putTask(newTask(p.title || v, date, p.section || ui.filter || null, {time: p.time || null, remind: p.time ? 0 : null, repeat: p.repeat || null}));
+    putTask(newTask(p.title || v, date, p.section || ui.filter || null, {time: p.time || null, remind: p.time ? 0 : null, repeat: p.repeat || null, star: !!p.star, deadline: p.deadline || null, goal: p.goal || null}));
     if (date) toast(t('added', {d: shortDate(date)}), t('show'), () => jumpTo(date));
     const ni = $('#inboxInput'); if (ni) ni.focus({preventScroll:true});
+  } else if (kind === 'habit-add'){
+    const inp = f.querySelector('input'), v = inp.value.trim(); if (!v) return;
+    S.habits.push({id: uid('h'), name: v.slice(0, 40)});
+    inp.value = ''; f.classList.remove('has-text'); persist(); renderInbox();
+    const ni = $('#habitInput'); if (ni) ni.focus({preventScroll:true});
+  } else if (kind === 'habit-sheet'){ saveHabit();
+  } else if (kind === 'goal-sheet'){ saveGoal();
+  } else if (kind === 'tpl-sheet'){ saveTpl();
   } else if (kind === 'sec-add'){
     const inp = $('#secName'), v = inp.value.trim(); if (!v){ shake(inp); return; }
-    S.sections.push({id: uid('s'), name: v.slice(0, 40), color: ui.newSecColor || SEC_COLORS[0]});
-    ui.newSecName = ''; ui.newSecColor = null;
+    S.sections.push({id: uid('s'), name: v.slice(0, 40), icon: ui.newSecIcon || SEC_ICON_IDS[0]});
+    ui.newSecName = ''; ui.newSecIcon = null;
     saveSettings(); renderAll(); renderDrawer();
   } else if (kind === 'sheet'){ saveSheet(); }
 });
 document.addEventListener('input', e => {
   const el = e.target;
-  if (el.id === 'inboxInput') el.closest('.note-add').classList.toggle('has-text', !!el.value.trim());
+  if (el.id === 'inboxInput' || el.id === 'habitInput') el.closest('.note-add').classList.toggle('has-text', !!el.value.trim());
+  if (el.id === 'moodNote' && S.mood[TK]){ S.mood[TK].note = el.value.slice(0, 140); persist(); }
   if (el.id === 'secName') ui.newSecName = el.value;
   if (el.id === 'shTitle' && SH && !SH.id){ SH.parsed = el.value.trim() ? parseQuick(el.value) : null; sheetGroups(); }
 });
@@ -1547,6 +2442,13 @@ document.addEventListener('change', e => {
   if (el.dataset && el.dataset.set){ S[el.dataset.set] = el.checked; persist(); if (el.checked && el.dataset.set === 'haptics') haptic(12); }
   if (el.id === 'backupIn' && el.files && el.files[0]){ importBackup(el.files[0]); el.value = ''; }
 });
+// Enter in a step or template line adds that line instead of saving the whole sheet.
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || e.isComposing) return;
+  if (e.target.id === 'stepIn'){ e.preventDefault(); addStep(); }
+  else if (e.target.id === 'tsItem'){ e.preventDefault(); addTsItem(); }
+  else if (e.target.id === 'moodNote'){ e.preventDefault(); ui.moodOpen = false; renderWeek(); }
+}, true);
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape'){
     if ($('#sheetWrap').classList.contains('open')) closeSheet();
@@ -1636,7 +2538,7 @@ function setHover(el){
   if (el){
     el.classList.add('drop-hover');
     if (el.classList.contains('band') && !el.classList.contains('open')) g.springT = setTimeout(() => { if (g.hover === el && el.isConnected){ toggleDay(el); dragMove(); } }, 650);
-    if (el.classList.contains('note') && !ui.inboxOpen) g.springT = setTimeout(() => { if (g.hover === el){ ui.inboxOpen = true; el.classList.add('open'); renderInboxDuringDrag(); dragMove(); } }, 650);
+    if (el.classList.contains('note') && (!ui.inboxOpen || ui.noteTab !== 'tasks')) g.springT = setTimeout(() => { if (g.hover === el){ ui.inboxOpen = true; ui.noteTab = 'tasks'; el.classList.add('open'); renderInboxDuringDrag(); dragMove(); } }, 650);
   }
 }
 function renderInboxDuringDrag(){
@@ -1716,6 +2618,7 @@ function dragEnd(g, cancelled){
   if (d.type === 'trash'){ deleteWithUndo(g.id); return; }
   if (d.type === 'inbox'){
     const order = computeOrder(null, d.before, g.id);
+    ui.noteTab = 'tasks';
     putTask(Object.assign({}, x, {date: null, origDate: null, order}));
     if (x.date) toast(t('toInbox'));
     return;
@@ -1733,13 +2636,13 @@ function dragEnd(g, cancelled){
 
 /* ================= smart input: «Встреча завтра в 10 #работа» ================= */
 const WD_WORDS = [
-  ['понедельник','пн','monday','lunes','lundi'],
-  ['вторник','вт','tuesday','martes','mardi'],
-  ['среду','среда','ср','wednesday','miércoles','miercoles','mercredi'],
-  ['четверг','чт','thursday','jueves','jeudi'],
-  ['пятницу','пятница','пт','friday','viernes','vendredi'],
-  ['субботу','суббота','сб','saturday','sábado','sabado','samedi'],
-  ['воскресенье','вс','sunday','domingo','dimanche']
+  ['понедельник','понедельника','понедельнику','пн','monday','lunes','lundi'],
+  ['вторник','вторника','вторнику','вт','tuesday','martes','mardi'],
+  ['среду','среда','среды','среде','ср','wednesday','miércoles','miercoles','mercredi'],
+  ['четверг','четверга','четвергу','чт','thursday','jueves','jeudi'],
+  ['пятницу','пятница','пятницы','пятнице','пт','friday','viernes','vendredi'],
+  ['субботу','суббота','субботы','субботе','сб','saturday','sábado','sabado','samedi'],
+  ['воскресенье','воскресенья','воскресенью','вс','sunday','domingo','dimanche']
 ];
 const WD_ALT = WD_WORDS.flat().sort((a, b) => b.length - a.length).join('|');
 const wdIndex = w => WD_WORDS.findIndex(ws => ws.includes(w.toLowerCase()));
@@ -1769,8 +2672,32 @@ const QP = {
   nextWeek: rxw('(?:через неделю|на следующей неделе|next week|la semana que viene|la próxima semana|la semaine prochaine)'),
   wd: rxw('(?:(?:в|во|on|next|el|este|le|ce)\\s+)?(' + WD_ALT + ')'),
   num: rxw('(\\d{1,2})([./])(\\d{1,2})(?:[./](\\d{2,4}))?'),
-  mon: rxw('(\\d{1,2})\\s+(?:de\\s+)?([a-zа-яёéûô]{3,})\\.?')
+  mon: rxw('(\\d{1,2})\\s+(?:de\\s+)?([a-zа-яёéûô]{3,})\\.?'),
+  star: /(^|\s)(!{1,3}|★)(?=\s|$)/u,
+  goal: /(^|\s)@([^\s@]+)/u,
+  dl: rxw('(?:до|к|by|due|before|hasta el|hasta|antes del|avant|d’ici|d\'ici)\\s+(' + WD_ALT + '|сегодня|завтра|послезавтра|today|tomorrow|hoy|mañana|demain|\\d{1,2}[./]\\d{1,2}(?:[./]\\d{2,4})?|\\d{1,2}\\s+(?:de\\s+)?[a-zа-яёéûô]{3,})')
 };
+// "friday", "25.10", "5 ноября" → a date key, or null if the words are not a date.
+function tokenDate(tok){
+  const s = tok.toLowerCase().trim(), today0 = parseKey(TK), addK = n => keyOf(addDays(today0, n));
+  if (/^(сегодня|today|hoy)$/.test(s)) return TK;
+  if (/^(завтра|tomorrow|mañana|demain)$/.test(s)) return addK(1);
+  if (s === 'послезавтра') return addK(2);
+  const wi = wdIndex(s); if (wi >= 0) return addK((wi - (today0.getDay() + 6) % 7 + 7) % 7);
+  let m = s.match(/^(\d{1,2})([./])(\d{1,2})(?:[./](\d{2,4}))?$/);
+  if (m){
+    const us = lang === 'en' && m[2] === '/', d = us ? +m[3] : +m[1], mo = us ? +m[1] : +m[3], y = m[4] ? (+m[4] < 100 ? 2000 + +m[4] : +m[4]) : today0.getFullYear();
+    if (mo < 1 || mo > 12 || d < 1 || d > new Date(y, mo, 0).getDate()) return null;
+    const k = keyOf(new Date(y, mo - 1, d)); return !m[4] && k < TK ? keyOf(new Date(y + 1, mo - 1, d)) : k;
+  }
+  m = s.match(/^(\d{1,2})\s+(?:de\s+)?([a-zа-яёéûô]{3,})\.?$/u);
+  if (m){
+    const d = +m[1], mi = MONTH_PRE.findIndex(ps => ps.some(p => m[2].startsWith(p))), y = today0.getFullYear();
+    if (mi < 0 || d < 1 || d > new Date(y, mi + 1, 0).getDate()) return null;
+    const k = keyOf(new Date(y, mi, d)); return k < TK ? keyOf(new Date(y + 1, mi, d)) : k;
+  }
+  return null;
+}
 // Pulls date, time, #section and repeat out of free text; whatever is left becomes the title.
 function parseQuick(text){
   const out = {hits: []};
@@ -1786,6 +2713,14 @@ function parseQuick(text){
     if (!sec) return false;
     out.section = sec.id;
   });
+  take(QP.star, () => { out.star = true; });
+  take(QP.goal, m => {
+    const tok = m[2].toLowerCase(), norm = n => n.toLowerCase().replace(/\s+/g, ''), live = S.goals.filter(g => !g.achieved);
+    const g = tok.length > 1 && (live.find(x => norm(x.title) === tok) || live.find(x => norm(x.title).startsWith(tok)) || live.find(x => x.title.toLowerCase().split(/\s+/).some(w => w.startsWith(tok))));
+    if (!g) return false;
+    out.goal = g.id;
+  });
+  take(QP.dl, m => { const k = tokenDate(m[2]); if (!k) return false; out.deadline = k; });
   QP.time.some(re => take(re, m => {
     let h = +m[2]; const mi = m[3] ? +m[3] : 0, suf = (m[4] || '').toLowerCase();
     if (/pm|вечера|tarde|noche|soir/.test(suf) || (suf === 'дня' && h < 12)){ if (h < 12) h += 12; }
@@ -1818,6 +2753,9 @@ function parseQuick(text){
   if (out.time) out.hits.push(out.time);
   if (out.section) out.hits.push(secOf(out.section).name);
   if (out.repeat) out.hits.push(t(REPEAT_KEYS[out.repeat]));
+  if (out.star) out.hits.push('★ ' + t('starOn'));
+  if (out.deadline) out.hits.push(t('dueBy', {d: shortDate(out.deadline)}));
+  if (out.goal) out.hits.push(goalOf(out.goal).title);
   let title = s.replace(/\s{2,}/g, ' ').replace(/\s+([,.!?;])/g, '$1').trim();
   title = title.replace(/(^|\s)(в|во|к|на|on|at|à|a|el|le|de|por|pour|для)$/iu, '').replace(/^[\s,;.\-–—]+|[\s,;\-–—]+$/g, '').trim();
   const c0 = text.trim().charAt(0);
@@ -2009,6 +2947,8 @@ if (window.visualViewport){
   vv.addEventListener('resize', upd); vv.addEventListener('scroll', upd);
 }
 
+if (!S.templates){ S.templates = defaultTemplates(); persist(); }
+if (!S.ach) checkAchievements(); // remembers what is already earned, without announcing it
 applyTheme();
 renderAll();
 runSplash(() => { introAnim(); checkReminders(); });
